@@ -1,0 +1,360 @@
+---
+/**
+ * components/GuidePage.astro — shared per-country EOS guide page (Phase 4).
+ *
+ * Rendered by src/pages/guides/[country].astro (ar) and
+ * src/pages/en/guides/[country].astro (en). All legal figures are rendered
+ * from the Phase 2 data model via lib/guide.ts — nothing is hardcoded.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getDict, fill } from '../i18n/dict.js';
+import type { LocaleCode } from '../i18n/locales.js';
+import { EOS_RULES, EMPLOYMENT, COUNTRY_CODES, type GccCountryCode } from '../data/index.js';
+import { COUNTRY_SLUGS } from '../lib/countries.js';
+import { localizedPath } from '../lib/seo.js';
+import { articleJsonLd, faqJsonLd, type FaqItem } from '../lib/toolSeo.js';
+import {
+  GUIDE_ASSUMPTIONS,
+  capText,
+  formatDateISO,
+  formatNum,
+  guideExample,
+  minServiceText,
+  rateWords,
+  resignationBandLine,
+  tierSentence,
+  yearsWord,
+} from '../lib/guide.js';
+
+interface Props {
+  locale: LocaleCode;
+  code: GccCountryCode;
+}
+
+const { locale, code } = Astro.props;
+const dict = getDict(locale);
+const rules = EOS_RULES[code];
+const employment = EMPLOYMENT[code];
+const slug = COUNTRY_SLUGS[code];
+const path = `/guides/${slug}/`;
+const countryName = locale === 'ar' ? rules.nameAr : rules.nameEn;
+const title = fill(dict.guides.pageTitle, { country: countryName });
+const description = fill(dict.guides.pageDescription, { country: countryName });
+const lawName = locale === 'ar' ? rules.sources[0].lawAr : rules.sources[0].lawEn;
+
+const termScenario = rules.scenarios.find((s) => s.id === 'termination')!;
+const resignScenario = rules.scenarios.find((s) => s.id === 'resignation')!;
+const tiers = termScenario.tiers.map((t, i) =>
+  tierSentence(code, t, i, termScenario.tiers, locale),
+);
+const hasReduction =
+  resignScenario.resignationBands?.some((b) => b.fraction < 1 - 1e-9) ?? false;
+const bands = (resignScenario.resignationBands ?? []).map((b) =>
+  resignationBandLine(b, locale),
+);
+const basisWord = dict.eos.basisShort[rules.wageBasis.kind];
+const example = guideExample(code);
+
+const faqs: FaqItem[] = [
+  {
+    q: fill(dict.guides.faqAllowanceQ, { country: countryName }),
+    a: fill(dict.guides.faqAllowanceA, { country: countryName, basis: basisWord }),
+  },
+  {
+    q: dict.guides.faqResignQ,
+    a: hasReduction
+      ? fill(dict.guides.faqResignAYes, { bands: bands.join(locale === 'ar' ? '؛ ' : '; ') })
+      : dict.guides.faqResignANo,
+  },
+  {
+    q: dict.guides.faqPayoutQ,
+    a: locale === 'ar' ? rules.payoutAr : rules.payoutEn,
+  },
+  { q: dict.guides.faqFractionsQ, a: dict.guides.faqFractionsA },
+];
+
+const jsonLdExtra = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    JSON.parse(
+      articleJsonLd({
+        headline: fill(dict.guides.heading, { country: countryName }),
+        description,
+        path,
+        locale,
+      }),
+    ),
+    JSON.parse(faqJsonLd(faqs)),
+  ],
+});
+
+const siblingCodes = COUNTRY_CODES.filter((c) => c !== code);
+const toolLinks = [
+  { href: '/tools/salary-net/', label: dict.calculators.toolNames.salaryNet },
+  { href: '/tools/vat/', label: dict.calculators.toolNames.vat },
+  { href: '/tools/leave-balance/', label: dict.calculators.toolNames.leave },
+  { href: '/tools/notice-period/', label: dict.calculators.toolNames.notice },
+];
+const exampleAssumptions = [
+  ...GUIDE_ASSUMPTIONS[code].map((k) => dict.eos.assumptions[k]),
+  ...example.assumptions
+    .map((k) => (dict.eos.assumptions as Record<string, string>)[k])
+    .filter((s): s is string => typeof s === 'string'),
+].filter((s, i, arr) => arr.indexOf(s) === i);
+---
+
+<BaseLayout locale={locale} path={path} title={title} description={description} jsonLdExtra={jsonLdExtra}>
+  <article class="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+    <nav aria-label="breadcrumb" class="text-sm text-brand-500">
+      <a href={localizedPath('/', locale)} class="hover:text-brand-800">{dict.nav.home}</a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">{fill(dict.guides.heading, { country: countryName })}</span>
+    </nav>
+
+    <h1 class="mt-4 text-3xl font-black text-brand-950 sm:text-4xl">
+      {fill(dict.guides.heading, { country: countryName })}
+    </h1>
+    <p class="mt-4 text-lg leading-8 text-brand-700">
+      {fill(dict.guides.intro, { country: countryName, law: lawName })}
+    </p>
+    <p class="mt-3 rounded-xl bg-brand-50 p-4 text-sm leading-7 text-brand-600">
+      {dict.guides.scopeNote}
+    </p>
+
+    <section class="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secEligibility}</h2>
+      <ul class="mt-3 list-disc space-y-2 ps-5 leading-7 text-brand-700">
+        <li>{fill(dict.guides.eligibilityTermination, { min: minServiceText(termScenario.minServiceYears, locale) })}</li>
+        <li>{fill(dict.guides.eligibilityResignation, { min: minServiceText(resignScenario.minServiceYears, locale) })}</li>
+      </ul>
+      <p class="mt-3 border-s-4 border-gold-400 ps-4 text-sm leading-7 text-brand-600">
+        {dict.guides.notes[code]}
+      </p>
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secCalculation}</h2>
+      <p class="mt-3 leading-7 text-brand-700">
+        {fill(dict.guides.calcIntro, { basis: basisWord })}
+      </p>
+      <ul class="mt-3 list-disc space-y-2 ps-5 leading-7 text-brand-700">
+        {tiers.map((t) => <li>{t}</li>)}
+      </ul>
+
+      <h3 class="mt-6 text-lg font-bold text-brand-900">{dict.guides.exampleTitle}</h3>
+      <p class="mt-2 leading-7 text-brand-700">
+        {fill(dict.guides.exampleIntro, {
+          wage: formatNum(example.wage, locale),
+          currency: example.currencyCode,
+          years: example.years,
+        })}
+      </p>
+      <ul class="mt-3 space-y-2 rounded-xl bg-brand-50 p-4 leading-7 text-brand-800">
+        {
+          example.lines.map((l) => (
+            <li>
+              {fill(dict.guides.exampleLine, {
+                yearsWord: yearsWord(l.yearsInBand, locale),
+                rate: rateWords(code, l.rateMonthsPerYear, locale),
+                amount: formatNum(l.amount, locale),
+                currency: example.currencyCode,
+              })}
+            </li>
+          ))
+        }
+        <li class="font-extrabold text-brand-950">
+          {fill(dict.guides.exampleTotal, {
+            amount: formatNum(example.total, locale),
+            currency: example.currencyCode,
+          })}
+        </li>
+        {
+          example.resignationTotal !== null && (
+            <li class="text-sm text-brand-600">
+              {fill(dict.guides.exampleResignation, {
+                amount: formatNum(example.resignationTotal, locale),
+                currency: example.currencyCode,
+              })}
+            </li>
+          )
+        }
+      </ul>
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secResignation}</h2>
+      {
+        hasReduction ? (
+          <>
+            <p class="mt-3 leading-7 text-brand-700">{dict.guides.reductionIntro}</p>
+            <ul class="mt-3 list-disc space-y-2 ps-5 leading-7 text-brand-700">
+              {bands.map((b) => <li>{b}</li>)}
+            </ul>
+          </>
+        ) : (
+          <p class="mt-3 leading-7 text-brand-700">{dict.guides.noReduction}</p>
+        )
+      }
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secCap}</h2>
+      <p class="mt-3 leading-7 text-brand-700">{capText(termScenario.capMonths, locale)}</p>
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secNoticeLeave}</h2>
+      <ul class="mt-3 space-y-3 leading-7 text-brand-700">
+        {
+          employment.notice.map((n) => (
+            <li>
+              {fill(dict.guides.noticeLine, {
+                scope: locale === 'ar' ? n.appliesToAr : n.appliesToEn,
+                employee: n.employeeDays,
+                employer: n.employerDays,
+              })}
+            </li>
+          ))
+        }
+        <li>
+          {fill(dict.guides.leaveLine, {
+            days: employment.annualLeave.daysPerYear,
+            eligibility: locale === 'ar' ? employment.annualLeave.eligibilityAr : employment.annualLeave.eligibilityEn,
+          })}
+        </li>
+      </ul>
+    </section>
+
+    {
+      rules.transition && (
+        <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+          <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secTransition}</h2>
+          <p class="mt-3 leading-7 text-brand-700">
+            {locale === 'ar' ? rules.transition.descriptionAr : rules.transition.descriptionEn}
+          </p>
+          <p class="mt-2 text-sm leading-7 text-brand-600">
+            {formatDateISO(rules.transition.cutoffDate, locale)}
+            {code === 'OM' && (
+              <span class="mt-2 block rounded-xl bg-gold-400/10 p-3">{dict.guides.transitionAmbiguityNote}</span>
+            )}
+          </p>
+        </section>
+      )
+    }
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secMistakes}</h2>
+      <ul class="mt-3 list-disc space-y-2 ps-5 leading-7 text-brand-700">
+        {dict.guides.mistakes[code].map((m) => <li>{m}</li>)}
+      </ul>
+    </section>
+
+    {
+      exampleAssumptions.length > 0 && (
+        <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+          <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secAssumptions}</h2>
+          <ul class="mt-3 list-disc space-y-2 ps-5 text-sm leading-7 text-brand-600">
+            {exampleAssumptions.map((a) => <li>{a}</li>)}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secSources}</h2>
+      <p class="mt-3 leading-7 text-brand-700">{dict.guides.sourcesIntro}</p>
+      <ul class="mt-3 space-y-3 text-sm leading-7">
+        {
+          rules.sources.map((s) => (
+            <li class="rounded-xl bg-brand-50 p-4">
+              <p class="font-bold text-brand-900">
+                {locale === 'ar' ? s.lawAr : s.lawEn} — {s.article}
+              </p>
+              {(locale === 'ar' ? s.noteAr : s.noteEn) && (
+                <p class="mt-1 text-brand-600">{locale === 'ar' ? s.noteAr : s.noteEn}</p>
+              )}
+              <a href={s.url} target="_blank" rel="noopener noreferrer" class="mt-1 inline-block text-brand-700 underline hover:text-brand-900">
+                {s.url}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secFaq}</h2>
+      <dl class="mt-4 space-y-4">
+        {
+          faqs.map((f) => (
+            <div class="rounded-xl bg-brand-50 p-4">
+              <dt class="font-bold text-brand-900">{f.q}</dt>
+              <dd class="mt-2 leading-7 text-brand-700">{f.a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.guides.secRelated}</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <a
+          href={localizedPath(`/calculator/${slug}/`, locale)}
+          class="rounded-xl bg-brand-950 p-5 text-white transition hover:bg-brand-900"
+        >
+          <p class="font-extrabold text-gold-300">{dict.guides.relatedCalc}</p>
+          <p class="mt-2 text-sm leading-6 text-brand-100">
+            {fill(dict.guides.relatedCalcDesc, { country: countryName })}
+          </p>
+        </a>
+        <div class="rounded-xl bg-brand-50 p-5">
+          <p class="font-bold text-brand-900">{dict.guides.relatedTools}</p>
+          <ul class="mt-2 space-y-1 text-sm">
+            {
+              toolLinks.map((t) => (
+                <li>
+                  <a href={localizedPath(t.href, locale)} class="text-brand-700 underline hover:text-brand-900">
+                    {t.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="rounded-xl bg-brand-50 p-5">
+          <p class="font-bold text-brand-900">{dict.guides.relatedGuides}</p>
+          <ul class="mt-2 space-y-1 text-sm">
+            {
+              siblingCodes.map((c) => (
+                <li>
+                  <a
+                    href={localizedPath(`/guides/${COUNTRY_SLUGS[c]}/`, locale)}
+                    class="text-brand-700 underline hover:text-brand-900"
+                  >
+                    {locale === 'ar' ? EOS_RULES[c].nameAr : EOS_RULES[c].nameEn}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="rounded-xl bg-brand-50 p-5">
+          <p class="font-bold text-brand-900">{dict.guides.relatedCompare}</p>
+          <ul class="mt-2 space-y-1 text-sm">
+            <li>
+              <a href={localizedPath('/compare/gulf-eos/', locale)} class="text-brand-700 underline hover:text-brand-900">
+                {dict.footer.compareHubLink}
+              </a>
+            </li>
+            <li>
+              <a href={localizedPath('/compare/saudi-vs-uae/', locale)} class="text-brand-700 underline hover:text-brand-900">
+                {dict.footer.compareSaAeLink}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

@@ -1,0 +1,18 @@
+---
+/**
+ * pages/en/guides/[country].astro — English per-country EOS guide pages (Phase 4).
+ */
+import GuidePage from '../../../components/GuidePage.astro';
+import { allCountrySlugs, codeFromSlug } from '../../../lib/countries.js';
+
+export function getStaticPaths() {
+  return allCountrySlugs().map((slug) => ({
+    params: { country: slug },
+    props: { code: codeFromSlug(slug)! },
+  }));
+}
+
+const { code } = Astro.props;
+---
+
+<GuidePage locale="en" code={code} />

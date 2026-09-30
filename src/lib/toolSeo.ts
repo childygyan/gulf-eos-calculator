@@ -36,6 +36,27 @@ export function softwareAppJsonLd(input: {
   return JSON.stringify(data);
 }
 
+/** Article JSON-LD for guide / FAQ / comparison content pages. */
+export function articleJsonLd(input: {
+  headline: string;
+  description: string;
+  /** Unprefixed path, e.g. `/guides/saudi-arabia/`. */
+  path: string;
+  locale: LocaleCode;
+}): string {
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: input.headline,
+    description: input.description,
+    url: `${SITE_URL}${input.path}`,
+    inLanguage: input.locale,
+    author: { '@id': `${SITE_URL}/#organization` },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+  };
+  return JSON.stringify(data);
+}
+
 /** FAQPage JSON-LD. */
 export function faqJsonLd(faqs: FaqItem[]): string {
   const data = {

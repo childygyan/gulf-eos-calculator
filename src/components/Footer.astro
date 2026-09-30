@@ -6,6 +6,8 @@ import type { Dict } from '../i18n/dict.js';
 import type { LocaleCode } from '../i18n/locales.js';
 import { fill } from '../i18n/dict.js';
 import { localizedPath } from '../lib/seo.js';
+import { COUNTRY_SLUGS } from '../lib/countries.js';
+import { COUNTRY_CODES, EOS_RULES } from '../data/index.js';
 
 interface Props {
   locale: LocaleCode;
@@ -13,26 +15,67 @@ interface Props {
 }
 
 const { locale, dict } = Astro.props;
-const homeHref = localizedPath('/', locale);
 const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-brand-800 bg-brand-950 text-brand-200">
   <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-    <div class="grid gap-8 md:grid-cols-3">
+    <div class="grid gap-8 md:grid-cols-4">
       <div>
         <p class="text-lg font-extrabold text-white">{dict.meta.siteName}</p>
         <p class="mt-2 text-sm leading-6">{dict.footer.tagline}</p>
       </div>
-      <nav aria-label={dict.footer.columns}>
-        <p class="text-sm font-bold uppercase tracking-wider text-gold-300">{dict.footer.columns}</p>
+      <nav aria-label={dict.footer.guidesTitle}>
+        <p class="text-sm font-bold uppercase tracking-wider text-gold-300">
+          {dict.footer.guidesTitle}
+        </p>
+        <ul class="mt-3 space-y-2 text-sm">
+          {
+            COUNTRY_CODES.map((code) => (
+              <li>
+                <a
+                  href={localizedPath(`/guides/${COUNTRY_SLUGS[code]}/`, locale)}
+                  class="transition hover:text-white"
+                >
+                  {locale === 'ar' ? EOS_RULES[code].nameAr : EOS_RULES[code].nameEn}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <nav aria-label={dict.footer.contentTitle}>
+        <p class="text-sm font-bold uppercase tracking-wider text-gold-300">
+          {dict.footer.contentTitle}
+        </p>
         <ul class="mt-3 space-y-2 text-sm">
           <li>
-            <a href={homeHref} class="transition hover:text-white">{dict.nav.home}</a>
+            <a href={localizedPath('/faq/', locale)} class="transition hover:text-white">
+              {dict.nav.faq}
+            </a>
           </li>
           <li>
-            <a href={`${homeHref}#countries`} class="transition hover:text-white">
-              {dict.nav.countries}
+            <a
+              href={localizedPath('/compare/gulf-eos/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.compareHubLink}
+            </a>
+          </li>
+          <li>
+            <a
+              href={localizedPath('/compare/saudi-vs-uae/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.compareSaAeLink}
+            </a>
+          </li>
+          <li>
+            <a
+              href={localizedPath('/calculators/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.nav.calculators}
             </a>
           </li>
         </ul>

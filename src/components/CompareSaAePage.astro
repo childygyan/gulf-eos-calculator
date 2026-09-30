@@ -1,0 +1,220 @@
+---
+/**
+ * components/CompareSaAePage.astro — Saudi Arabia vs UAE deep comparison (Phase 4).
+ *
+ * All figures rendered from the Phase 2 data model; the verdict is
+ * qualitative and contains no numbers.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getDict, fill } from '../i18n/dict.js';
+import type { LocaleCode } from '../i18n/locales.js';
+import { EOS_RULES, EMPLOYMENT } from '../data/index.js';
+import { COUNTRY_SLUGS } from '../lib/countries.js';
+import { localizedPath } from '../lib/seo.js';
+import { articleJsonLd } from '../lib/toolSeo.js';
+import {
+  capText,
+  resignationBandLine,
+  tierSentence,
+} from '../lib/guide.js';
+
+interface Props {
+  locale: LocaleCode;
+}
+
+const { locale } = Astro.props;
+const dict = getDict(locale);
+const path = '/compare/saudi-vs-uae/';
+const codes = ['SA', 'AE'] as const;
+const joiner = locale === 'ar' ? '؛ ' : '; ';
+
+const cards = codes.map((code) => {
+  const rules = EOS_RULES[code];
+  const term = rules.scenarios.find((s) => s.id === 'termination')!;
+  const resign = rules.scenarios.find((s) => s.id === 'resignation')!;
+  const bands = (resign.resignationBands ?? []).map((b) => resignationBandLine(b, locale));
+  const reduces = resign.resignationBands?.some((b) => b.fraction < 1 - 1e-9) ?? false;
+  const employment = EMPLOYMENT[code];
+  return {
+    code,
+    name: locale === 'ar' ? rules.nameAr : rules.nameEn,
+    formula: term.tiers
+      .map((t, i) => tierSentence(code, t, i, term.tiers, locale))
+      .join(joiner),
+    basis: locale === 'ar' ? rules.wageBasis.descriptionAr : rules.wageBasis.descriptionEn,
+    resignation: reduces ? bands : null,
+    cap: capText(term.capMonths, locale),
+    payout: locale === 'ar' ? rules.payoutAr : rules.payoutEn,
+    notice: employment.notice.map((n) =>
+      fill(dict.guides.noticeLine, {
+        scope: locale === 'ar' ? n.appliesToAr : n.appliesToEn,
+        employee: n.employeeDays,
+        employer: n.employerDays,
+      }),
+    ),
+    leave: fill(dict.guides.leaveLine, {
+      days: employment.annualLeave.daysPerYear,
+      eligibility:
+        locale === 'ar'
+          ? employment.annualLeave.eligibilityAr
+          : employment.annualLeave.eligibilityEn,
+    }),
+    guideHref: localizedPath(`/guides/${COUNTRY_SLUGS[code]}/`, locale),
+    calcHref: localizedPath(`/calculator/${COUNTRY_SLUGS[code]}/`, locale),
+  };
+});
+
+const jsonLdExtra = articleJsonLd({
+  headline: dict.compare.saAeHeading,
+  description: dict.compare.saAeDescription,
+  path,
+  locale,
+});
+
+const sectionCard = 'rounded-2xl bg-white p-6 shadow-sm';
+---
+
+<BaseLayout
+  locale={locale}
+  path={path}
+  title={dict.compare.saAeTitle}
+  description={dict.compare.saAeDescription}
+  jsonLdExtra={jsonLdExtra}
+>
+  <article class="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+    <nav aria-label="breadcrumb" class="text-sm text-brand-500">
+      <a href={localizedPath('/', locale)} class="hover:text-brand-800">{dict.nav.home}</a>
+      <span aria-hidden="true"> / </span>
+      <a href={localizedPath('/compare/gulf-eos/', locale)} class="hover:text-brand-800">
+        {dict.footer.compareHubLink}
+      </a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">{dict.compare.saAeHeading}</span>
+    </nav>
+    <h1 class="mt-4 text-3xl font-black text-brand-950 sm:text-4xl">{dict.compare.saAeHeading}</h1>
+    <p class="mt-4 max-w-3xl text-lg leading-8 text-brand-700">{dict.compare.saAeIntro}</p>
+
+    <section class:list={['mt-8', sectionCard]}>
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.compare.secFormula}</h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {
+          cards.map((c) => (
+            <div class="rounded-xl bg-brand-50 p-5">
+              <p class="font-extrabold text-brand-900">{c.name}</p>
+              <p class="mt-2 leading-7 text-brand-700">{c.formula}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class:list={['mt-6', sectionCard]}>
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.compare.secBasis}</h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {
+          cards.map((c) => (
+            <div class="rounded-xl bg-brand-50 p-5">
+              <p class="font-extrabold text-brand-900">{c.name}</p>
+              <p class="mt-2 text-sm leading-7 text-brand-700">{c.basis}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class:list={['mt-6', sectionCard]}>
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.compare.secResignation}</h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {
+          cards.map((c) => (
+            <div class="rounded-xl bg-brand-50 p-5">
+              <p class="font-extrabold text-brand-900">{c.name}</p>
+              {c.resignation ? (
+                <ul class="mt-2 list-disc space-y-1 ps-5 text-sm leading-7 text-brand-700">
+                  {c.resignation.map((b) => <li>{b}</li>)}
+                </ul>
+              ) : (
+                <p class="mt-2 text-sm leading-7 text-brand-700">{dict.guides.noReduction}</p>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class:list={['mt-6', sectionCard]}>
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.compare.secCap}</h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {
+          cards.map((c) => (
+            <div class="rounded-xl bg-brand-50 p-5">
+              <p class="font-extrabold text-brand-900">{c.name}</p>
+              <p class="mt-2 text-sm leading-7 text-brand-700">{c.cap}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class:list={['mt-6', sectionCard]}>
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.compare.secPayout}</h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {
+          cards.map((c) => (
+            <div class="rounded-xl bg-brand-50 p-5">
+              <p class="font-extrabold text-brand-900">{c.name}</p>
+              <p class="mt-2 text-sm leading-7 text-brand-700">{c.payout}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class:list={['mt-6', sectionCard]}>
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.compare.secNoticeLeave}</h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {
+          cards.map((c) => (
+            <div class="rounded-xl bg-brand-50 p-5">
+              <p class="font-extrabold text-brand-900">{c.name}</p>
+              <ul class="mt-2 list-disc space-y-1 ps-5 text-sm leading-7 text-brand-700">
+                {c.notice.map((n) => <li>{n}</li>)}
+                <li>{c.leave}</li>
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class:list={['mt-6', sectionCard]}>
+      <h2 class="text-xl font-extrabold text-brand-900">{dict.compare.secVerdict}</h2>
+      <p class="mt-3 leading-8 text-brand-700">{dict.compare.verdict}</p>
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-brand-950 p-6 text-white">
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div>
+          <p class="font-bold text-gold-300">{dict.compare.viewGuides}</p>
+          <ul class="mt-2 space-y-1 text-sm">
+            {cards.map((c) => <li><a href={c.guideHref} class="underline hover:text-gold-300">{c.name}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <p class="font-bold text-gold-300">{dict.compare.viewCalculators}</p>
+          <ul class="mt-2 space-y-1 text-sm">
+            {cards.map((c) => <li><a href={c.calcHref} class="underline hover:text-gold-300">{c.name}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <p class="font-bold text-gold-300">{dict.compare.viewHub}</p>
+          <p class="mt-2 text-sm">
+            <a href={localizedPath('/compare/gulf-eos/', locale)} class="underline hover:text-gold-300">
+              {dict.footer.compareHubLink}
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

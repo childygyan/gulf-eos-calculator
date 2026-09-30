@@ -37,6 +37,8 @@ export const en: Dict = {
   countries: {
     title: 'Covered Gulf countries',
     subtitle: 'We cover the labour systems of all six GCC member states.',
+    guideLink: 'Guide',
+    calcLink: 'Calculator',
     items: [
       { name: 'Saudi Arabia', code: 'SA' },
       { name: 'United Arab Emirates', code: 'AE' },
@@ -72,6 +74,10 @@ export const en: Dict = {
   footer: {
     tagline: 'Your guide to Gulf end-of-service benefits.',
     columns: 'Links',
+    guidesTitle: 'Country guides',
+    contentTitle: 'Site content',
+    compareHubLink: 'Gulf countries comparison',
+    compareSaAeLink: 'Saudi vs UAE: comparison',
     rights: '© {year} Mustahaqqat. All rights reserved.',
     disclaimer:
       'Notice: content is general information for awareness purposes only, not legal advice. Always check the official texts of labour laws.',
@@ -292,5 +298,192 @@ export const en: Dict = {
         days: 'Please enter a valid notice period (a positive number of days).',
       },
     },
+  },
+  guides: {
+    pageTitle: 'End-of-Service Benefits Guide: {country} | Mustahaqqat',
+    pageDescription:
+      'A plain-English guide to end-of-service rules in {country}: who qualifies, how the award is calculated, resignation vs termination, caps — with a worked example and official sources.',
+    heading: 'End-of-Service Benefits Guide: {country}',
+    intro:
+      'This guide explains the key end-of-service rules in {country} in plain language, based on {law}. Every figure comes from the official texts listed under Sources below, and the worked example is computed by our own calculator.',
+    scopeNote:
+      'Scope: private-sector employees covered by the labour law. Excludes domestic workers, free-zone employees under separate regimes, and workers covered by national pension/social-insurance systems.',
+    secEligibility: 'Who qualifies?',
+    eligibilityTermination: 'On termination or contract expiry: {min}.',
+    eligibilityResignation: 'On resignation: {min}.',
+    secCalculation: 'How is the award calculated?',
+    calcIntro:
+      'The award is based on the "{basis}", with fractions of a year pro-rated to actual service. The formula:',
+    exampleTitle: 'Worked example',
+    exampleIntro: 'An employee on a monthly wage of {wage} {currency} with {years} years of service (termination case):',
+    exampleLine: '{yearsWord} × {rate} of the wage = {amount} {currency}',
+    exampleTotal: 'Total: {amount} {currency}',
+    exampleResignation: 'Had this been a resignation, the total would be: {amount} {currency}.',
+    secResignation: 'Resignation vs termination',
+    noReduction: 'The law does not distinguish between resignation and termination when calculating the award — the result is the same either way.',
+    reductionIntro: 'The law applies reduced rates to resignation depending on length of service:',
+    secCap: 'Cap on the award',
+    secNoticeLeave: 'Notice period and annual leave',
+    noticeLine: 'Notice ({scope}): employee {employee} days / employer {employer} days.',
+    leaveLine: 'Annual leave: {days} days — {eligibility}',
+    secTransition: 'Transitional periods',
+    transitionAmbiguityNote:
+      'Honesty note: press coverage of the ministerial clarification disagrees on the split date (the law’s effective date vs the contract-conclusion date); we use the effective date here and flag the disagreement.',
+    secMistakes: 'Common mistakes',
+    secAssumptions: 'Notes on the figures',
+    secSources: 'Official sources',
+    sourcesIntro: 'Every figure in this guide comes from the following official sources:',
+    secFaq: 'Frequently asked questions',
+    secRelated: 'Related links',
+    relatedCalc: 'Calculate your award',
+    relatedCalcDesc: 'Try the interactive calculator for {country}, with every step explained.',
+    relatedTools: 'Supporting calculators',
+    relatedGuides: 'Other country guides',
+    relatedCompare: 'Compare countries',
+    faqAllowanceQ: 'Do allowances count towards the award in {country}?',
+    faqAllowanceA:
+      'Wages in {country} are assessed on the "{basis}" basis. See "How is the award calculated?" above for details.',
+    faqResignQ: 'Is the award lower if I resign?',
+    faqResignAYes: 'Yes — the law applies reduced resignation rates depending on length of service: {bands}',
+    faqResignANo: 'No — the law does not distinguish between resignation and termination when calculating the award.',
+    faqPayoutQ: 'When and how is the award paid?',
+    faqFractionsQ: 'Are fractions of a year counted?',
+    faqFractionsA: 'Yes — fractions of a year are pro-rated to the actual period of service.',
+    notes: {
+      SA: 'Watch the exceptions: the full award is due on force majeure, and for a female worker ending her contract after marriage or childbirth — check the official text for details.',
+      AE: 'The old labour law and its resignation reductions were repealed; current law applies no reduction to resignation.',
+      KW: 'The reduced resignation rates apply to indefinite-term contracts.',
+      QA: 'Three weeks is the statutory minimum; your contract may grant more — always check your contract.',
+      BH: 'Identify the right payer by your start date: the employer for earlier service, the Social Insurance Organisation for later service.',
+      OM: 'This formula covers workers not under the Social Protection Law; those covered fall under its own system.',
+    },
+    mistakes: {
+      SA: [
+        'Assuming an early resignation earns a partial award — nothing is due before the statutory minimum service is completed.',
+        'Calculating on basic salary only and ignoring the regular allowances included in the last wage.',
+        'Assuming a statutory cap exists on the award.',
+      ],
+      AE: [
+        'Assuming resignation reduces the award — current law applies no reduction at all.',
+        'Including allowances in the base — the law uses basic salary only.',
+        'Ignoring the cap on long service periods.',
+      ],
+      KW: [
+        'Expecting an award on resignation after short service — nothing is due before the minimum is completed.',
+        'Forgetting the statutory cap on the award.',
+        'Confusing the last wage with an average wage — the law uses the last wage paid.',
+      ],
+      QA: [
+        'Expecting the rate to rise with longer service — the law has no escalating tiers.',
+        'Assuming resignation reduces the award — there is no statutory reduction.',
+        'Confusing the statutory minimum with the potentially higher contractual amount.',
+      ],
+      BH: [
+        'The common claim that resignation halves the award — the law contains no such reduction.',
+        'Claiming from the wrong payer — identify the payer from your service start date.',
+        'Including allowances other than the social allowance in the base.',
+      ],
+      OM: [
+        'Applying the new-law formula to service before its effective date.',
+        'Assuming workers under the Social Protection Law use the same formula.',
+        'Including allowances in the base — the law uses the last basic wage.',
+      ],
+    },
+  },
+  faqPage: {
+    pageTitle: 'End-of-Service FAQ — Gulf States | Mustahaqqat',
+    pageDescription:
+      'Plain-English answers to the most common questions about end-of-service benefits in Saudi Arabia, the UAE, Kuwait, Qatar, Bahrain, and Oman.',
+    heading: 'Frequently Asked Questions',
+    intro:
+      'The questions we hear most about end-of-service benefits across the Gulf, answered in plain language from the official labour-law texts.',
+    generalTitle: 'General questions',
+    countryTitle: 'Questions by country',
+    items: [
+      {
+        q: 'What is the end-of-service award?',
+        a: 'A sum of money due to the employee when the employment relationship ends, set by each country’s labour law under a statutory formula based on wages and length of service.',
+      },
+      {
+        q: 'Are the rules the same across the Gulf?',
+        a: 'No — they differ by country: the wage base, the accrual rates, how resignation is treated, and whether a cap exists. See the "Gulf countries comparison" page for a side-by-side view.',
+      },
+      {
+        q: 'Are fractions of a year counted?',
+        a: 'Yes — all six states apply pro-rating: part of a year counts in proportion to the actual period served.',
+      },
+      {
+        q: 'Is the calculator result a final, binding amount?',
+        a: 'No — results are estimates for awareness only. The actual amount depends on your contract and circumstances; the final reference is the official labour-law text or a legal professional.',
+      },
+      {
+        q: 'I resigned after a year and a half in Saudi Arabia — do I get anything?',
+        a: 'No — the minimum for resignation in Saudi Arabia is {saMin} of service, so nothing is due before that is completed.',
+      },
+      {
+        q: 'Will my award be lower if I resign from my job in the UAE?',
+        a: 'No — current UAE labour law applies no reduction to resignation; the award is identical whether you or the employer end the contract.',
+      },
+      {
+        q: 'Is there a cap on end-of-service benefits in Kuwait?',
+        a: 'Yes — the statutory cap in Kuwait is {kwCap} months of wages.',
+      },
+      {
+        q: 'Does my award in Qatar grow the longer I work?',
+        a: 'The rate is flat — the minimum is three weeks per year for the whole service period; Qatari law has no escalating tiers.',
+      },
+      {
+        q: 'I recently started work in Bahrain — where do I claim my award from?',
+        a: 'For service from {bhDate}, the award is claimed from the Social Insurance Organisation; earlier service is paid directly by the employer.',
+      },
+      {
+        q: 'I worked in Oman before the new labour law took effect — how is my award calculated?',
+        a: 'Your service is split: before {omDate} it uses the old formula, after that one full month per year — the two parts are combined on your last basic wage.',
+      },
+    ],
+  },
+  compare: {
+    hubTitle: 'Gulf End-of-Service Comparison | Mustahaqqat',
+    hubDescription:
+      'Compare end-of-service systems in Saudi Arabia, the UAE, Kuwait, Qatar, Bahrain, and Oman: formula, wage base, resignation treatment, and caps.',
+    hubHeading: 'Comparing End-of-Service Benefits Across the Gulf',
+    hubIntro:
+      'A side-by-side table built directly from the official texts of the six labour laws — every figure comes from the same data model that powers our calculators.',
+    colCountry: 'Country',
+    colFormula: 'Award formula (on termination)',
+    colBasis: 'Wage base',
+    colResignation: 'On resignation',
+    colCap: 'Cap',
+    colMin: 'Minimum service',
+    resignFull: 'Full award — no statutory reduction',
+    resignReduced: 'Reduced by length of service',
+    noCap: 'No statutory cap',
+    capValue: '{n} months of wages',
+    minNone: 'None',
+    minValue: '{n}',
+    notesTitle: 'Notes on the table',
+    hubNotes: [
+      'The formulas above are for termination or contract expiry; see the resignation column for the differences.',
+      'The "wage base" is the wage the formula is built on under each law — see the country guides for details.',
+      'All six states pro-rate fractions of a year to actual service.',
+    ],
+    saAeTitle: 'End-of-Service Compared: Saudi Arabia vs the UAE | Mustahaqqat',
+    saAeDescription:
+      'A detailed comparison of end-of-service systems in Saudi Arabia and the UAE: formula, wage base, resignation, cap, and payment deadline.',
+    saAeHeading: 'Saudi Arabia or the UAE? Comparing End-of-Service Benefits',
+    saAeIntro:
+      'The two biggest Gulf systems for expatriate employment — but the details that matter differ. This comparison uses the official texts only.',
+    secFormula: 'The formula',
+    secBasis: 'Wage base',
+    secResignation: 'Resignation',
+    secCap: 'Cap',
+    secPayout: 'Payment deadline',
+    secNoticeLeave: 'Notice and annual leave',
+    secVerdict: 'The bottom line',
+    verdict:
+      'There is no universally "better" country — Saudi Arabia pays higher rates to those who complete ten years and resign, while the UAE is simpler (no resignation reduction at all) but has a clear cap. Run your own case in the calculator for the country where you work; individual differences outweigh any generalisation.',
+    viewGuides: 'Guides for both countries',
+    viewHub: 'Compare all six Gulf states',
+    viewCalculators: 'Calculators for both countries',
   },
 };
