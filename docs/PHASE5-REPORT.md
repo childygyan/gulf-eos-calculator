@@ -94,8 +94,8 @@ slots are invisible.
 ## Delivery
 
 - GitHub: pushed to `childygyan/gulf-eos-calculator` branch `main`;
-  implementation commit `<SHA>` (verified: remote default branch `main`,
-  head matches after push).
+  implementation commit `aa825d4faa8ddd657b3bad88152807eca7c91bf5`
+  (verified: remote default branch `main`, head matches after push).
 - Drive: `gulf-eos-calculator-phase5-20260930.zip` (excludes `node_modules/`,
   `dist/`, `.astro/`, `.git/`) in the project folder.
   - File ID: `<DRIVE_ID>`
