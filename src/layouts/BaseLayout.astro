@@ -1,0 +1,47 @@
+---
+/**
+ * layouts/BaseLayout.astro — the single site shell.
+ *
+ * Sets <html lang>/<dir> from the locale, injects the full SEO head block
+ * (meta, OG, canonical, hreflang, JSON-LD), and renders Header / <slot> / Footer.
+ */
+import { getLocale, type LocaleCode } from '../i18n/locales.js';
+import { getDict } from '../i18n/dict.js';
+import { headTags } from '../lib/seo.js';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  locale: LocaleCode;
+  /** Unprefixed path, e.g. `/`. Used for canonical + hreflang. */
+  path: string;
+  title: string;
+  description: string;
+}
+
+const { locale, path, title, description } = Astro.props;
+const loc = getLocale(locale);
+const dict = getDict(locale);
+const head = headTags({ locale, path, title, description });
+---
+
+<!doctype html>
+<html lang={loc.htmlLang} dir={loc.dir}>
+  <head>
+    <Fragment set:html={head} />
+  </head>
+  <body class="min-h-screen bg-brand-50 text-brand-950 antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded focus:bg-gold-400 focus:px-4 focus:py-2 focus:text-brand-950"
+    >
+      {locale === 'ar' ? 'تخطَّ إلى المحتوى' : 'Skip to content'}
+    </a>
+    <Header locale={locale} path={path} dict={dict} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} dict={dict} />
+  </body>
+</html>

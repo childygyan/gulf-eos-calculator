@@ -1,0 +1,36 @@
+---
+/**
+ * components/LanguageSwitcher.astro — visible locale switcher.
+ * Links the current (unprefixed) path in the other locale.
+ */
+import { LOCALES, type LocaleCode } from '../i18n/locales.js';
+import { getDict } from '../i18n/dict.js';
+import { localizedPath } from '../lib/seo.js';
+
+interface Props {
+  locale: LocaleCode;
+  /** Unprefixed path, e.g. `/`. */
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const dict = getDict(locale);
+const other = LOCALES.find((l) => l.code !== locale)!;
+---
+
+<div class="flex items-center gap-2">
+  <span class="text-xs text-brand-200" aria-hidden="true">{dict.switcher.label}</span>
+  <span
+    class="rounded-full bg-brand-800 px-3 py-1 text-xs font-semibold text-gold-300"
+    aria-current="true"
+  >
+    {dict.switcher.current}
+  </span>
+  <a
+    href={localizedPath(path, other.code)}
+    hreflang={other.hreflang}
+    class="rounded-full border border-brand-700 px-3 py-1 text-xs font-semibold text-brand-100 transition hover:border-gold-400 hover:text-gold-300"
+  >
+    {dict.switcher.other}
+  </a>
+</div>

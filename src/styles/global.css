@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RTL-first base tweaks: logical text alignment and comfortable Arabic line height. */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    text-align: start;
+    line-height: 1.8;
+  }
+  [dir='ltr'] body,
+  html[dir='ltr'] body {
+    line-height: 1.6;
+  }
+}

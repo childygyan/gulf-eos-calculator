@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0b1120"/>
+  <circle cx="980" cy="120" r="220" fill="#e8b444" opacity="0.12"/>
+  <circle cx="180" cy="540" r="160" fill="#e8b444" opacity="0.10"/>
+  <rect x="90" y="90" width="120" height="120" rx="26" fill="#e8b444"/>
+  <text x="150" y="172" font-family="Tahoma, 'Segoe UI', sans-serif" font-size="72" font-weight="900" fill="#0b1120" text-anchor="middle">م</text>
+  <text x="250" y="150" font-family="Tahoma, 'Segoe UI', sans-serif" font-size="64" font-weight="900" fill="#ffffff" text-anchor="start">مستحقات</text>
+  <text x="250" y="205" font-family="Tahoma, 'Segoe UI', sans-serif" font-size="30" fill="#c3cede" text-anchor="start">دليل مستحقات نهاية الخدمة في دول الخليج</text>
+  <text x="90" y="560" font-family="Verdana, sans-serif" font-size="28" fill="#9aabc9" text-anchor="start">Mustahaqqat — Gulf End-of-Service Benefits Guide</text>
+</svg>

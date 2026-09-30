@@ -1,0 +1,48 @@
+---
+/**
+ * components/Footer.astro — site footer: brand, nav links, legal disclaimer.
+ */
+import type { Dict } from '../i18n/dict.js';
+import type { LocaleCode } from '../i18n/locales.js';
+import { fill } from '../i18n/dict.js';
+import { localizedPath } from '../lib/seo.js';
+
+interface Props {
+  locale: LocaleCode;
+  dict: Dict;
+}
+
+const { locale, dict } = Astro.props;
+const homeHref = localizedPath('/', locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-brand-800 bg-brand-950 text-brand-200">
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <div class="grid gap-8 md:grid-cols-3">
+      <div>
+        <p class="text-lg font-extrabold text-white">{dict.meta.siteName}</p>
+        <p class="mt-2 text-sm leading-6">{dict.footer.tagline}</p>
+      </div>
+      <nav aria-label={dict.footer.columns}>
+        <p class="text-sm font-bold uppercase tracking-wider text-gold-300">{dict.footer.columns}</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li>
+            <a href={homeHref} class="transition hover:text-white">{dict.nav.home}</a>
+          </li>
+          <li>
+            <a href={`${homeHref}#countries`} class="transition hover:text-white">
+              {dict.nav.countries}
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div>
+        <p class="text-xs leading-6 text-brand-300">{dict.footer.disclaimer}</p>
+      </div>
+    </div>
+    <div class="mt-8 border-t border-brand-800 pt-6 text-center text-xs text-brand-300">
+      {fill(dict.footer.rights, { year })}
+    </div>
+  </div>
+</footer>

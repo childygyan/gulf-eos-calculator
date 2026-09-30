@@ -1,0 +1,20 @@
+---
+/**
+ * pages/index.astro — Arabic (default, RTL) homepage.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import { getDict } from '../i18n/dict.js';
+
+const locale = 'ar' as const;
+const dict = getDict(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  path="/"
+  title={dict.meta.homeTitle}
+  description={dict.meta.homeDescription}
+>
+  <Hero locale={locale} dict={dict} />
+</BaseLayout>
