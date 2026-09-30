@@ -1,0 +1,24 @@
+---
+/**
+ * components/Disclaimer.astro — the printed-style estimate disclaimer.
+ * Rendered under every calculator result: results are estimates based on
+ * statutory rules, not legal/financial/tax advice.
+ */
+import type { Dict } from '../i18n/dict.js';
+
+interface Props {
+  dict: Dict;
+}
+
+const { dict } = Astro.props;
+---
+
+<aside
+  class="mt-8 rounded-2xl border border-gold-300 bg-gold-50 p-5 text-sm leading-7 text-brand-900"
+  aria-label={dict.common.disclaimerTitle}
+>
+  <p class="font-extrabold text-brand-950">
+    <span aria-hidden="true">⚠️</span> {dict.common.disclaimerTitle}
+  </p>
+  <p class="mt-1">{dict.common.disclaimer}</p>
+</aside>

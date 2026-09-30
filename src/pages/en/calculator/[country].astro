@@ -1,0 +1,18 @@
+---
+/**
+ * pages/en/calculator/[country].astro — English EOS calculator mirrors.
+ */
+import EosPage from '../../../components/EosPage.astro';
+import { allCountrySlugs, codeFromSlug } from '../../../lib/countries.js';
+
+export function getStaticPaths() {
+  return allCountrySlugs().map((slug) => ({
+    params: { country: slug },
+    props: { code: codeFromSlug(slug)! },
+  }));
+}
+
+const { code } = Astro.props;
+---
+
+<EosPage locale="en" code={code} />

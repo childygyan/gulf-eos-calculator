@@ -1,0 +1,261 @@
+---
+/**
+ * components/EosPage.astro — shared per-country EOS calculator page.
+ *
+ * Rendered by src/pages/calculator/[country].astro (ar) and
+ * src/pages/en/calculator/[country].astro (en). Server-renders the intro,
+ * wage-basis explainer, sources, and FAQ; the interactive form is wired by
+ * src/scripts/eos-calculator.ts from the JSON config below.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Disclaimer from './Disclaimer.astro';
+import { getDict, fill } from '../i18n/dict.js';
+import type { LocaleCode } from '../i18n/locales.js';
+import { EOS_RULES, SALARY_STRUCTURES, type GccCountryCode } from '../data/index.js';
+import { COUNTRY_SLUGS } from '../lib/countries.js';
+import { localizedPath } from '../lib/seo.js';
+import { softwareAppJsonLd, faqJsonLd } from '../lib/toolSeo.js';
+
+interface Props {
+  locale: LocaleCode;
+  code: GccCountryCode;
+}
+
+const { locale, code } = Astro.props;
+const dict = getDict(locale);
+const rules = EOS_RULES[code];
+const countryName = locale === 'ar' ? rules.nameAr : rules.nameEn;
+const slug = COUNTRY_SLUGS[code];
+const path = `/calculator/${slug}/`;
+const title = fill(dict.eos.pageTitle, { country: countryName });
+const description = fill(dict.eos.pageDescription, { country: countryName });
+const currencyName = locale === 'ar' ? rules.currencyAr : rules.currencyEn;
+const wageBasisDesc = locale === 'ar' ? rules.wageBasis.descriptionAr : rules.wageBasis.descriptionEn;
+const payout = locale === 'ar' ? rules.payoutAr : rules.payoutEn;
+const structure = SALARY_STRUCTURES[code];
+
+const hasResignationReduction =
+  rules.scenarios
+    .find((s) => s.id === 'resignation')
+    ?.resignationBands?.some((b) => b.fraction < 1) ?? false;
+
+const faqs = [
+  {
+    q: fill(dict.eos.faqAllowanceQ, { country: countryName }),
+    a: fill(dict.eos.faqAllowanceA, {
+      country: countryName,
+      basis: dict.eos.basisShort[rules.wageBasis.kind],
+      wageBasisTitle: dict.eos.wageBasisTitle,
+    }),
+  },
+  {
+    q: dict.eos.faqResignQ,
+    a: fill(hasResignationReduction ? dict.eos.faqResignAYes : dict.eos.faqResignANo, {
+      country: countryName,
+    }),
+  },
+  { q: dict.eos.faqPayoutQ, a: payout },
+];
+
+const jsonLdExtra = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    JSON.parse(
+      softwareAppJsonLd({
+        name: fill(dict.eos.heading, { country: countryName }),
+        description,
+        path,
+        locale,
+      }),
+    ),
+    JSON.parse(faqJsonLd(faqs)),
+  ],
+});
+
+const config = {
+  code,
+  locale,
+  currency: { code: rules.currencyCode, name: currencyName },
+  scenarios: rules.scenarios.map((s) => ({
+    id: s.id,
+    label: locale === 'ar' ? s.labelAr : s.labelEn,
+    min: s.minServiceYears,
+  })),
+  components: structure.components.map((k) => ({
+    id: k.id,
+    name: locale === 'ar' ? k.nameAr : k.nameEn,
+    included: k.includedInEosBasis,
+    note: locale === 'ar' ? (k.noteAr ?? null) : (k.noteEn ?? null),
+  })),
+  showDates: code === 'OM' || code === 'BH',
+  dateHint: code === 'OM' ? dict.eos.dateHintOm : dict.eos.dateHintBh,
+  cutoffLabel:
+    code === 'OM'
+      ? locale === 'ar'
+        ? '31 يوليو 2023'
+        : '31 July 2023'
+      : locale === 'ar'
+        ? '1 مارس 2024'
+        : '1 March 2024',
+  strings: { eos: dict.eos, common: dict.common },
+};
+
+const inputCls =
+  'w-full rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-brand-950 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-300';
+---
+
+<BaseLayout locale={locale} path={path} title={title} description={description} jsonLdExtra={jsonLdExtra}>
+  <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+    <a
+      href={localizedPath('/calculators/', locale)}
+      class="text-sm font-semibold text-brand-600 transition hover:text-gold-600"
+    >
+      <span class="inline-block rtl:rotate-180" aria-hidden="true">←</span>
+      {dict.common.backToCalculators}
+    </a>
+
+    <h1 class="mt-4 text-3xl font-black text-brand-950 sm:text-4xl">
+      {fill(dict.eos.heading, { country: countryName })}
+    </h1>
+    <p class="mt-3 leading-8 text-brand-700">
+      {fill(dict.eos.intro, { country: countryName })}
+    </p>
+
+    <section class="mt-6 rounded-2xl border border-brand-100 bg-white p-5 shadow-sm" aria-label={dict.eos.wageBasisTitle}>
+      <h2 class="font-extrabold text-brand-950">{dict.eos.wageBasisTitle}</h2>
+      <p class="mt-2 text-sm leading-7 text-brand-700">{wageBasisDesc}</p>
+    </section>
+
+    <form id="eos-form" class="mt-6 rounded-2xl border border-brand-100 bg-white p-5 shadow-sm sm:p-6">
+      <fieldset>
+        <legend class="font-extrabold text-brand-950">{dict.eos.scenarioLabel}</legend>
+        <div id="eos-scenarios" class="mt-3 grid gap-3 sm:grid-cols-2"></div>
+      </fieldset>
+
+      <div class="mt-6">
+        <h2 class="font-extrabold text-brand-950">
+          {fill(dict.eos.componentsTitle, { currency: currencyName })}
+        </h2>
+        <p class="mt-1 text-sm leading-6 text-brand-600">{dict.eos.componentsHint}</p>
+        <div id="eos-components" class="mt-3 grid gap-4 sm:grid-cols-2"></div>
+        <div id="eos-excluded" class="mt-3"></div>
+      </div>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="eos-years" class="mb-1 block text-sm font-semibold text-brand-800">
+            {dict.eos.yearsLabel}
+          </label>
+          <input id="eos-years" type="number" min="0" max="70" step="1" inputmode="numeric" placeholder="0" class={inputCls} />
+        </div>
+        <div>
+          <label for="eos-months" class="mb-1 block text-sm font-semibold text-brand-800">
+            {dict.eos.monthsLabel}
+          </label>
+          <input id="eos-months" type="number" min="0" max="11" step="1" inputmode="numeric" placeholder="0" class={inputCls} />
+        </div>
+      </div>
+      <p class="mt-1 text-xs text-brand-500">{dict.eos.serviceHint}</p>
+
+      <div id="eos-dates" class="mt-6 hidden">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="eos-start-date" class="mb-1 block text-sm font-semibold text-brand-800">
+              {dict.eos.startDateLabel}
+            </label>
+            <input id="eos-start-date" type="date" class={inputCls} />
+          </div>
+          <div>
+            <label for="eos-end-date" class="mb-1 block text-sm font-semibold text-brand-800">
+              {dict.eos.endDateLabel}
+            </label>
+            <input id="eos-end-date" type="date" class={inputCls} />
+          </div>
+        </div>
+        <p id="eos-date-hint" class="mt-1 text-xs leading-5 text-brand-500"></p>
+      </div>
+
+      <div id="eos-errors" class="mt-4 hidden rounded-xl bg-red-50 p-4 text-sm leading-6 text-red-700"></div>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <button
+          type="submit"
+          class="rounded-xl bg-gold-400 px-6 py-3 font-extrabold text-brand-950 shadow transition hover:bg-gold-300"
+        >
+          {dict.common.calculate}
+        </button>
+        <button
+          type="button"
+          id="eos-reset"
+          class="rounded-xl border border-brand-200 px-6 py-3 font-bold text-brand-700 transition hover:border-brand-400"
+        >
+          {dict.common.reset}
+        </button>
+      </div>
+    </form>
+
+    <section id="eos-result" class="mt-6 hidden rounded-2xl border border-gold-300 bg-white p-5 shadow-md sm:p-6" aria-live="polite">
+      <p class="inline-block rounded-full bg-gold-100 px-3 py-1 text-xs font-bold text-gold-800">
+        {dict.common.estimateBadge}
+      </p>
+      <h2 class="mt-2 font-extrabold text-brand-950">{dict.eos.resultTitle}</h2>
+      <p class="mt-1 text-sm text-brand-600">{dict.eos.totalLabel}</p>
+      <p id="eos-total" class="mt-1 text-4xl font-black text-brand-950"></p>
+
+      <h3 class="mt-6 font-extrabold text-brand-950">{dict.eos.breakdownTitle}</h3>
+      <div id="eos-breakdown" class="mt-2"></div>
+      <div id="eos-split" class="mt-4 hidden rounded-xl bg-brand-50 p-4"></div>
+      <div id="eos-assumptions" class="mt-4 hidden rounded-xl bg-gold-50 p-4"></div>
+    </section>
+
+    <section id="eos-ineligible" class="mt-6 hidden rounded-2xl border border-brand-200 bg-white p-5 shadow-sm" aria-live="polite">
+      <div id="eos-ineligible-body"></div>
+    </section>
+
+    <Disclaimer dict={dict} />
+
+    <section class="mt-8" aria-label={dict.eos.sourcesTitle}>
+      <h2 class="text-xl font-black text-brand-950">{dict.eos.sourcesTitle}</h2>
+      <p class="mt-1 text-sm text-brand-600">{dict.eos.sourcesHint}</p>
+      <ul class="mt-3 space-y-2">
+        {
+          rules.sources.map((src) => (
+            <li class="rounded-xl border border-brand-100 bg-white p-4 text-sm leading-6 shadow-sm">
+              <p class="font-bold text-brand-950">
+                {locale === 'ar' ? src.lawAr : src.lawEn} — {src.article}
+              </p>
+              <a
+                href={src.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="break-all text-gold-700 underline decoration-gold-300 underline-offset-2 hover:text-gold-600"
+              >
+                {src.url}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mt-8" aria-label={dict.eos.faqTitle}>
+      <h2 class="text-xl font-black text-brand-950">{dict.eos.faqTitle}</h2>
+      <div class="mt-3 space-y-3">
+        {
+          faqs.map((f) => (
+            <details class="rounded-xl border border-brand-100 bg-white p-4 shadow-sm">
+              <summary class="cursor-pointer font-bold text-brand-950">{f.q}</summary>
+              <p class="mt-2 text-sm leading-7 text-brand-700">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  <script type="application/json" id="eos-config" set:html={JSON.stringify(config)} />
+  <script>
+    import { initEosCalculator } from '../scripts/eos-calculator.js';
+    initEosCalculator();
+  </script>
+</BaseLayout>

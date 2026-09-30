@@ -18,9 +18,11 @@ interface Props {
   path: string;
   title: string;
   description: string;
+  /** Optional extra JSON-LD script body (e.g. SoftwareApplication, FAQPage). */
+  jsonLdExtra?: string;
 }
 
-const { locale, path, title, description } = Astro.props;
+const { locale, path, title, description, jsonLdExtra } = Astro.props;
 const loc = getLocale(locale);
 const dict = getDict(locale);
 const head = headTags({ locale, path, title, description });
@@ -30,6 +32,7 @@ const head = headTags({ locale, path, title, description });
 <html lang={loc.htmlLang} dir={loc.dir}>
   <head>
     <Fragment set:html={head} />
+    {jsonLdExtra && <script type="application/ld+json" set:html={jsonLdExtra} />}
   </head>
   <body class="min-h-screen bg-brand-50 text-brand-950 antialiased">
     <a

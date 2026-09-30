@@ -1,0 +1,19 @@
+---
+/**
+ * pages/calculator/[country].astro — Arabic EOS calculator pages.
+ * One page per GCC country; content mirrors under /en/calculator/.
+ */
+import EosPage from '../../components/EosPage.astro';
+import { allCountrySlugs, codeFromSlug } from '../../lib/countries.js';
+
+export function getStaticPaths() {
+  return allCountrySlugs().map((slug) => ({
+    params: { country: slug },
+    props: { code: codeFromSlug(slug)! },
+  }));
+}
+
+const { code } = Astro.props;
+---
+
+<EosPage locale="ar" code={code} />

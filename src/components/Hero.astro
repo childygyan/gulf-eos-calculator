@@ -35,7 +35,7 @@ const homeHref = localizedPath('/', locale);
     <p class="mt-4 max-w-2xl text-lg leading-8 text-brand-100">{dict.hero.subtitle}</p>
     <div class="mt-8 flex flex-wrap items-center gap-4">
       <a
-        href="#countries"
+        href={localizedPath('/calculators/', locale)}
         class="rounded-xl bg-gold-400 px-6 py-3 text-base font-extrabold text-brand-950 shadow-lg transition hover:bg-gold-300"
       >
         {dict.hero.ctaPrimary}

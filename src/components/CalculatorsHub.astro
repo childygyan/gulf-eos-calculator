@@ -1,0 +1,114 @@
+---
+/**
+ * components/CalculatorsHub.astro — the /calculators/ hub page (both locales).
+ * Cards for the six per-country EOS calculators plus the four cluster tools.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getDict, fill } from '../i18n/dict.js';
+import type { LocaleCode } from '../i18n/locales.js';
+import { COUNTRY_CODES, EOS_RULES } from '../data/index.js';
+import { COUNTRY_SLUGS } from '../lib/countries.js';
+import { localizedPath } from '../lib/seo.js';
+import { softwareAppJsonLd } from '../lib/toolSeo.js';
+
+interface Props {
+  locale: LocaleCode;
+}
+
+const { locale } = Astro.props;
+const dict = getDict(locale);
+const path = '/calculators/';
+
+const tools: Array<{ slug: string; name: string; desc: string }> = [
+  { slug: 'salary-net', name: dict.calculators.toolNames.salaryNet, desc: dict.calculators.toolDescs.salaryNet },
+  { slug: 'vat', name: dict.calculators.toolNames.vat, desc: dict.calculators.toolDescs.vat },
+  { slug: 'leave-balance', name: dict.calculators.toolNames.leave, desc: dict.calculators.toolDescs.leave },
+  { slug: 'notice-period', name: dict.calculators.toolNames.notice, desc: dict.calculators.toolDescs.notice },
+];
+
+const jsonLdExtra = softwareAppJsonLd({
+  name: dict.calculators.heading,
+  description: dict.calculators.pageDescription,
+  path,
+  locale,
+});
+
+function card(href: string, badge: string, title: string, desc: string) {
+  return { href, badge, title, desc };
+}
+
+const eosCards = COUNTRY_CODES.map((code) => {
+  const rules = EOS_RULES[code];
+  const name = locale === 'ar' ? rules.nameAr : rules.nameEn;
+  return card(
+    localizedPath(`/calculator/${COUNTRY_SLUGS[code]}/`, locale),
+    code,
+    name,
+    fill(dict.calculators.eosCardDesc, { country: name }),
+  );
+});
+const toolCards = tools.map((t) =>
+  card(localizedPath(`/tools/${t.slug}/`, locale), '◆', t.name, t.desc),
+);
+---
+
+<BaseLayout
+  locale={locale}
+  path={path}
+  title={dict.calculators.pageTitle}
+  description={dict.calculators.pageDescription}
+  jsonLdExtra={jsonLdExtra}
+>
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <h1 class="text-3xl font-black text-brand-950 sm:text-4xl">{dict.calculators.heading}</h1>
+    <p class="mt-3 max-w-2xl leading-8 text-brand-700">{dict.calculators.subtitle}</p>
+
+    <section class="mt-10" aria-label={dict.calculators.eosTitle}>
+      <h2 class="text-2xl font-black text-brand-950">{dict.calculators.eosTitle}</h2>
+      <p class="mt-2 text-brand-600">{dict.calculators.eosDesc}</p>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          eosCards.map((c) => (
+            <li>
+              <a
+                href={c.href}
+                class="group flex h-full flex-col rounded-2xl border border-brand-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-gold-400 hover:shadow-md"
+              >
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-900 text-xs font-black tracking-wider text-gold-300">
+                  {c.badge}
+                </span>
+                <p class="mt-3 font-extrabold text-brand-950 group-hover:text-gold-700">{c.title}</p>
+                <p class="mt-1 flex-1 text-sm leading-6 text-brand-600">{c.desc}</p>
+                <p class="mt-3 text-sm font-bold text-gold-700">{dict.calculators.cardCta}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mt-12" aria-label={dict.calculators.toolsTitle}>
+      <h2 class="text-2xl font-black text-brand-950">{dict.calculators.toolsTitle}</h2>
+      <p class="mt-2 text-brand-600">{dict.calculators.toolsDesc}</p>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+        {
+          toolCards.map((c) => (
+            <li>
+              <a
+                href={c.href}
+                class="group flex h-full flex-col rounded-2xl border border-brand-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-gold-400 hover:shadow-md"
+              >
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gold-400 text-lg font-black text-brand-950" aria-hidden="true">
+                  {c.badge}
+                </span>
+                <p class="mt-3 font-extrabold text-brand-950 group-hover:text-gold-700">{c.title}</p>
+                <p class="mt-1 flex-1 text-sm leading-6 text-brand-600">{c.desc}</p>
+                <p class="mt-3 text-sm font-bold text-gold-700">{dict.calculators.cardCta}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

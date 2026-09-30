@@ -16,3 +16,12 @@
     line-height: 1.6;
   }
 }
+
+/* Checked-state styling for radio cards (plain :has — Tailwind's
+   has-checked variant did not emit in this setup). */
+@layer components {
+  .radio-card:has(input:checked) {
+    border-color: #dda12e;
+    background-color: #fdf9ec;
+  }
+}

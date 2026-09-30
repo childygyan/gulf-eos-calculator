@@ -103,3 +103,71 @@ describe('built pages carry hreflang + JSON-LD', () => {
     expect(robots).toContain(`Sitemap: ${SITE_URL}/sitemap-index.xml`);
   });
 });
+
+describe('Phase 3 tool pages carry hreflang + JSON-LD', () => {
+  const dist = join(process.cwd(), 'dist');
+
+  function readBuiltPage(rel: string): string {
+    const file = join(dist, rel);
+    if (!existsSync(file)) {
+      throw new Error(
+        `Built page missing: ${file}. Run "npm run build" before "npm test".`,
+      );
+    }
+    return readFileSync(file, 'utf8');
+  }
+
+  it('Arabic EOS page: rtl, canonical, hreflang, SoftwareApplication + FAQ JSON-LD, config JSON', () => {
+    const html = readBuiltPage(join('calculator', 'saudi-arabia', 'index.html'));
+    expect(html).toContain('<html lang="ar" dir="rtl"');
+    expect(html).toContain(`rel="canonical" href="${SITE_URL}/calculator/saudi-arabia/"`);
+    expect(html).toContain(`hreflang="ar" href="${SITE_URL}/calculator/saudi-arabia/"`);
+    expect(html).toContain(`hreflang="en" href="${SITE_URL}/en/calculator/saudi-arabia/"`);
+    expect(html).toContain(`hreflang="x-default" href="${SITE_URL}/calculator/saudi-arabia/"`);
+    expect(html).toContain('"@type":"SoftwareApplication"');
+    expect(html).toContain('"@type":"FAQPage"');
+    expect(html).toContain('id="eos-config"');
+    expect(html).toContain('مكافأة نهاية الخدمة');
+  });
+
+  it('English EOS page mirrors with ltr and the same tool path', () => {
+    const html = readBuiltPage(join('en', 'calculator', 'saudi-arabia', 'index.html'));
+    expect(html).toContain('<html lang="en" dir="ltr"');
+    expect(html).toContain(`rel="canonical" href="${SITE_URL}/en/calculator/saudi-arabia/"`);
+    expect(html).toContain(`hreflang="ar" href="${SITE_URL}/calculator/saudi-arabia/"`);
+    expect(html).toContain('id="eos-config"');
+  });
+
+  it('all six countries have ar + en calculator pages', () => {
+    for (const slug of ['saudi-arabia', 'uae', 'kuwait', 'qatar', 'bahrain', 'oman']) {
+      expect(existsSync(join(dist, 'calculator', slug, 'index.html')), `ar ${slug}`).toBe(true);
+      expect(existsSync(join(dist, 'en', 'calculator', slug, 'index.html')), `en ${slug}`).toBe(true);
+    }
+  });
+
+  it('calculators hub and the four tool pages exist in both locales', () => {
+    const pages = [
+      join('calculators', 'index.html'),
+      join('tools', 'salary-net', 'index.html'),
+      join('tools', 'vat', 'index.html'),
+      join('tools', 'leave-balance', 'index.html'),
+      join('tools', 'notice-period', 'index.html'),
+    ];
+    for (const p of pages) {
+      expect(existsSync(join(dist, p)), `ar ${p}`).toBe(true);
+      expect(existsSync(join(dist, 'en', p)), `en ${p}`).toBe(true);
+    }
+    const vat = readBuiltPage(join('tools', 'vat', 'index.html'));
+    expect(vat).toContain('"@type":"SoftwareApplication"');
+    expect(vat).toContain('id="vat-config"');
+  });
+
+  it('sitemap lists the new tool pages', () => {
+    const sitemap = readBuiltPage('sitemap-0.xml');
+    expect(sitemap).toContain(`${SITE_URL}/calculator/saudi-arabia/`);
+    expect(sitemap).toContain(`${SITE_URL}/en/calculator/oman/`);
+    expect(sitemap).toContain(`${SITE_URL}/tools/vat/`);
+    expect(sitemap).toContain(`${SITE_URL}/en/tools/leave-balance/`);
+    expect(sitemap).toContain(`${SITE_URL}/calculators/`);
+  });
+});

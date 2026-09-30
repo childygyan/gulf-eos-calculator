@@ -17,10 +17,14 @@ interface Props {
 
 const { locale, path, dict } = Astro.props;
 const homeHref = localizedPath('/', locale);
-// Phase 1: only the homepage exists. Country guides land in later phases;
-// nav points at the on-page countries section instead of dead links.
+// Phase 3: calculators hub added; countries anchor kept for the home grid.
 const navItems = [
   { label: dict.nav.home, href: homeHref, current: path === '/' },
+  {
+    label: dict.nav.calculators,
+    href: localizedPath('/calculators/', locale),
+    current: path === '/calculators/',
+  },
   { label: dict.nav.countries, href: `${homeHref}#countries`, current: false },
 ];
 ---
