@@ -50,13 +50,13 @@ No 500s on any static asset; no redirect contamination remains (spot-checked `/`
 ## GitHub
 
 - Pushed to `childygyan/gulf-eos-calculator` branch **`main`** via `~/workspace/skills/github/bin/gh_datapush.py` (remote default branch verified `main` via API).
-- Commit: `PHASE7_SHA` — "Phase 7: deploy + live verification"
+- Commit: `d29785611c97a10490ff2a81bb02c4f3ce480f6d` — "Phase 7: deploy to Cloudflare Pages + live verification (final phase)"
 
 ## Drive archive
 
 - `gulf-eos-calculator-phase7-20260930.zip` (excludes `node_modules/`, `dist/`, `.astro/`, `.git/`) in **Gulf EOS Calculator**
-- File ID: `PHASE7_DRIVE_ID`
-- Link: https://drive.google.com/file/d/PHASE7_DRIVE_ID/view?usp=drivesdk
+- File ID: `1nddbcaAITaB3zY6DZ2yTH1G1289JLYtI`
+- Link: https://drive.google.com/file/d/1nddbcaAITaB3zY6DZ2yTH1G1289JLYtI/view?usp=drivesdk
 
 ## Manual items for Firoz (unchanged, still his to do)
 
