@@ -94,12 +94,13 @@ slots are invisible.
 ## Delivery
 
 - GitHub: pushed to `childygyan/gulf-eos-calculator` branch `main`;
-  implementation commit `aa825d4faa8ddd657b3bad88152807eca7c91bf5`
+  implementation commit `aa825d4faa8ddd657b3bad88152807eca7c91bf5`,
+  plus a follow-up commit fixing the recorded SHA/Drive id in this report
   (verified: remote default branch `main`, head matches after push).
-- Drive: `gulf-eos-calculator-phase5-20260930.zip` (excludes `node_modules/`,
-  `dist/`, `.astro/`, `.git/`) in the project folder.
-  - File ID: `<DRIVE_ID>`
-  - Link: https://drive.google.com/file/d/<DRIVE_ID>/view?usp=drivesdk
+- Drive: `gulf-eos-calculator-phase5-20260930.zip` (243K, 141 files; excludes
+  `node_modules/`, `dist/`, `.astro/`, `.git/`) in the project folder.
+  - File ID: `14e84OEys9VMQCpVA4WWSjsY80otaFsmg`
+  - Link: https://drive.google.com/file/d/14e84OEys9VMQCpVA4WWSjsY80otaFsmg/view?usp=drivesdk
 
 ## Open notes for later phases
 
