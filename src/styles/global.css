@@ -10,6 +10,10 @@
   body {
     text-align: start;
     line-height: 1.8;
+    /* Never let page-level horizontal overflow escape: a single wide
+       component must not force the whole document to scroll sideways
+       (overflow-x: clip keeps position: sticky working). */
+    overflow-x: clip;
   }
   [dir='ltr'] body,
   html[dir='ltr'] body {

@@ -19,6 +19,7 @@ export const en: Dict = {
     countries: 'Countries',
     faq: 'FAQ',
     about: 'About',
+    menu: 'Menu',
   },
   switcher: {
     label: 'Language',

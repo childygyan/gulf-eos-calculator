@@ -22,6 +22,7 @@ export const ar = {
     countries: 'الدول',
     faq: 'الأسئلة الشائعة',
     about: 'من نحن',
+    menu: 'القائمة',
   },
   switcher: {
     label: 'اللغة',
