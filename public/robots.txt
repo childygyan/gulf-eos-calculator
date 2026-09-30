@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gulf-eos.example.com/sitemap-index.xml
+Sitemap: https://endofservicegulf.org/sitemap-index.xml

@@ -9,8 +9,8 @@
  *   non-placeholder emails — fail if found.
  * - New pages (/lawyers/, /corrections/, /contact/ × ar/en) exist with
  *   correct lang/dir, canonical, hreflang, and sitemap entries.
- * - Config placeholders documented: siteUrl + contactEmail still the
- *   example.com placeholders (Firoz must supply the real values).
+ * - Production domain live: siteUrl = https://endofservicegulf.org (contactEmail
+ *   on the same domain; the mailbox itself still to be provisioned by Firoz).
  *
  * Requires `astro build` to have run (fails loudly if dist is missing).
  */
@@ -74,15 +74,15 @@ const VALID_CORRECTION: CorrectionInput = {
 /* Config placeholders                                                 */
 /* ------------------------------------------------------------------ */
 
-describe('Phase 5 site config placeholders', () => {
-  it('siteUrl is still the placeholder domain', () => {
-    expect(SITE.siteUrl).toBe('https://gulf-eos.example.com');
-    expect(SITE_URL).toBe('https://gulf-eos.example.com');
+describe('Phase 5 site config (production domain live)', () => {
+  it('siteUrl is the production domain', () => {
+    expect(SITE.siteUrl).toBe('https://endofservicegulf.org');
+    expect(SITE_URL).toBe('https://endofservicegulf.org');
   });
 
-  it('contactEmail is a clearly-labeled placeholder on example.com', () => {
-    expect(SITE.contactEmail).toBe('intake@gulf-eos.example.com');
-    expect(intakeInbox()).toBe('intake@gulf-eos.example.com');
+  it('contactEmail is on the production domain (mailbox still to be provisioned by Firoz)', () => {
+    expect(SITE.contactEmail).toBe('intake@endofservicegulf.org');
+    expect(intakeInbox()).toBe('intake@endofservicegulf.org');
   });
 
   it('adsenseClientId is empty by default', () => {
@@ -183,7 +183,7 @@ describe('intake routing', () => {
 describe('mailto builder', () => {
   it('builds an encoded mailto: link to the intake inbox', () => {
     const link = buildMailto(intakeInbox(), 'Legal inquiry: SA — test', 'line one\nline two');
-    expect(link.startsWith('mailto:intake@gulf-eos.example.com?')).toBe(true);
+    expect(link.startsWith('mailto:intake@endofservicegulf.org?')).toBe(true);
     expect(link).toContain(encodeURIComponent('Legal inquiry: SA — test'));
     expect(link).toContain(encodeURIComponent('line one\nline two'));
   });
@@ -280,7 +280,7 @@ describe('no invented contacts in built HTML', () => {
       const html = readFileSync(f, 'utf8');
       const matches = html.match(EMAIL_PATTERN) ?? [];
       for (const m of matches) {
-        if (!m.endsWith('@gulf-eos.example.com')) offenders.push(`${f}: ${m}`);
+        if (!m.endsWith('@endofservicegulf.org')) offenders.push(`${f}: ${m}`);
       }
     }
     expect(offenders).toEqual([]);
@@ -346,10 +346,10 @@ describe('Phase 5 page inventory', () => {
     expect(enHtml).toContain('id="corrections-form"');
   });
 
-  it('contact page shows the placeholder inbox and the placeholder note', () => {
+  it('contact page shows the intake inbox and the temporary-address note', () => {
     const arHtml = readBuiltPage('contact/index.html');
-    expect(arHtml).toContain('intake@gulf-eos.example.com');
-    expect(arHtml).toContain('mailto:intake@gulf-eos.example.com');
+    expect(arHtml).toContain('intake@endofservicegulf.org');
+    expect(arHtml).toContain('mailto:intake@endofservicegulf.org');
   });
 
   it('footer links to the three new pages from both locales', () => {

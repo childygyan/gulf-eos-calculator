@@ -397,12 +397,22 @@ describe('Phase 6 shipped client-code hygiene', () => {
 /* Placeholder discipline                                                */
 /* ------------------------------------------------------------------ */
 
-describe('Phase 6 placeholder discipline', () => {
-  it('the placeholder domain/email appears in src/ only inside src/config/site.ts', () => {
+describe('Phase 6 domain discipline', () => {
+  it('the production domain appears in src/ only inside src/config/site.ts', () => {
     const bad: string[] = [];
     for (const f of srcFiles(src)) {
       const rel = f.slice(src.length + 1);
       if (rel === 'config/site.ts') continue;
+      const text = readFileSync(f, 'utf8');
+      if (text.includes('endofservicegulf.org')) bad.push(rel);
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it('no stale example.com domain remains anywhere in src/', () => {
+    const bad: string[] = [];
+    for (const f of srcFiles(src)) {
+      const rel = f.slice(src.length + 1);
       const text = readFileSync(f, 'utf8');
       if (text.includes('gulf-eos.example.com')) bad.push(rel);
     }
