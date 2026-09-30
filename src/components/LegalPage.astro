@@ -1,0 +1,64 @@
+---
+/**
+ * components/LegalPage.astro — shared renderer for the legal pages
+ * (privacy, terms, disclaimer). One component because the three pages are
+ * structurally identical: breadcrumb, H1, intro, updated-note, sections.
+ *
+ * Props:
+ *   locale — 'ar' | 'en'
+ *   page   — which dict section to render ('privacy' | 'terms' | 'disclaimerPage')
+ *   path   — UNPREFIXED path, e.g. '/privacy/' (localizedPath handles /en)
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getDict } from '../i18n/dict.js';
+import type { LocaleCode } from '../i18n/locales.js';
+import { localizedPath } from '../lib/seo.js';
+import { articleJsonLd } from '../lib/toolSeo.js';
+
+interface Props {
+  locale: LocaleCode;
+  page: 'privacy' | 'terms' | 'disclaimerPage';
+  /** Unprefixed path, e.g. `/privacy/`. */
+  path: string;
+}
+
+const { locale, page, path } = Astro.props;
+const dict = getDict(locale);
+const s = dict[page];
+
+const jsonLdExtra = articleJsonLd({
+  headline: s.heading,
+  description: s.pageDescription,
+  path,
+  locale,
+});
+---
+
+<BaseLayout
+  locale={locale}
+  path={path}
+  title={s.pageTitle}
+  description={s.pageDescription}
+  jsonLdExtra={jsonLdExtra}
+>
+  <article class="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+    <nav aria-label="breadcrumb" class="text-sm text-brand-500">
+      <a href={localizedPath('/', locale)} class="hover:text-brand-800">{dict.nav.home}</a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">{s.heading}</span>
+    </nav>
+
+    <h1 class="mt-4 text-3xl font-black text-brand-950 sm:text-4xl">{s.heading}</h1>
+    <p class="mt-4 text-lg leading-8 text-brand-700">{s.intro}</p>
+    <p class="mt-2 text-sm text-brand-500">{s.updated}</p>
+
+    {
+      s.sections.map((sec) => (
+        <section class="mt-8">
+          <h2 class="text-xl font-extrabold text-brand-950">{sec.h}</h2>
+          <p class="mt-2 leading-8 text-brand-700">{sec.p}</p>
+        </section>
+      ))
+    }
+  </article>
+</BaseLayout>

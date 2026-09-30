@@ -5,7 +5,7 @@
  *   (guides, faq, compare, lawyers, corrections, contact) in BOTH directions,
  *   plus the new Phase 6 common/manual-copy keys.
  * - Sitemap ↔ dist bidirectional: every built page is in the sitemap and
- *   every sitemap URL resolves to a built file (all 48 pages).
+ *   every sitemap URL resolves to a built file (all 54 pages).
  * - Titles and meta descriptions unique across all pages.
  * - canonical == hreflang self-reference + full ar/en/x-default set, every page.
  * - Accessibility: exactly one h1 with logical heading order; skip link +
@@ -119,7 +119,7 @@ describe('Phase 6 dictionary parity (Phase 4/5 sections, both directions)', () =
 });
 
 /* ------------------------------------------------------------------ */
-/* Sitemap ↔ dist bidirectional (all 48 pages)                           */
+/* Sitemap ↔ dist bidirectional (all 54 pages)                           */
 /* ------------------------------------------------------------------ */
 
 describe('Phase 6 sitemap ↔ dist bidirectional', () => {
@@ -128,11 +128,11 @@ describe('Phase 6 sitemap ↔ dist bidirectional', () => {
     return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   }
 
-  it('lists exactly the 48 built pages', () => {
+  it('lists exactly the 54 built pages', () => {
     const urls = sitemapUrls();
     const files = allBuiltHtml(dist);
-    expect(files).toHaveLength(48);
-    expect(urls).toHaveLength(48);
+    expect(files).toHaveLength(54);
+    expect(urls).toHaveLength(54);
   });
 
   it('every sitemap URL resolves to a built file', () => {
@@ -163,7 +163,7 @@ describe('Phase 6 sitemap ↔ dist bidirectional', () => {
 /* ------------------------------------------------------------------ */
 
 describe('Phase 6 SEO invariants across all pages', () => {
-  it('titles are unique across all 48 pages', () => {
+  it('titles are unique across all 54 pages', () => {
     const seen = new Map<string, string[]>();
     for (const file of allBuiltHtml(dist)) {
       const html = readFileSync(file, 'utf8');
@@ -175,7 +175,7 @@ describe('Phase 6 SEO invariants across all pages', () => {
     expect(dups, `duplicate titles: ${JSON.stringify(dups)}`).toEqual([]);
   });
 
-  it('meta descriptions are unique across all 48 pages', () => {
+  it('meta descriptions are unique across all 54 pages', () => {
     const seen = new Map<string, string[]>();
     for (const file of allBuiltHtml(dist)) {
       const html = readFileSync(file, 'utf8');

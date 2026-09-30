@@ -82,6 +82,10 @@ export const en: Dict = {
     lawyersLink: 'Talk to a lawyer',
     correctionsLink: 'Report a correction',
     contactLink: 'Contact us',
+    legalTitle: 'Legal',
+    privacyLink: 'Privacy Policy',
+    termsLink: 'Terms of Use',
+    disclaimerLink: 'Disclaimer',
     rights: '© {year} Mustahaqqat. All rights reserved.',
     disclaimer:
       'Notice: content is general information for awareness purposes only, not legal advice. Always check the official texts of labour laws.',
@@ -599,5 +603,116 @@ export const en: Dict = {
     correctionsLink: 'Use the correction form',
     lawyersCta: 'Have a legal case?',
     lawyersLink: 'Fill in the lawyer inquiry form',
+  },
+  privacy: {
+    pageTitle: 'Privacy Policy | Mustahaqqat',
+    pageDescription:
+      'How Mustahaqqat handles your data: no accounts, no analytics tracking, and contact forms work through your own email app.',
+    heading: 'Privacy Policy',
+    intro:
+      'This policy describes how Mustahaqqat handles information when you use the site.',
+    updated: 'Last updated: 30 September 2026.',
+    sections: [
+      {
+        h: 'A static site with no accounts',
+        p: 'Mustahaqqat is a static informational site — we never ask you to create an account, and we collect no names, phone numbers, or other identifying data to use the calculators and guides.',
+      },
+      {
+        h: 'Contact forms',
+        p: 'The "Talk to a lawyer" and "Report a correction" forms send nothing to any server — they compose an email in your own mail app, and you press send. If you email us, we see only your address and message content, used solely to reply to you.',
+      },
+      {
+        h: 'Cookies and analytics',
+        p: 'We set no first-party cookies and currently use no analytics tools. The site\u2019s ad slots are empty until an ad account is activated; if ads are enabled in future (e.g. Google AdSense), the ad provider may use cookies to serve relevant ads.',
+      },
+      {
+        h: 'Hosting and security',
+        p: 'The site is hosted on Cloudflare Pages, which may process technical data (such as IP addresses) for security and performance purposes only.',
+      },
+      {
+        h: 'Data sharing',
+        p: 'We do not sell your data or share it with third parties for marketing purposes.',
+      },
+      {
+        h: 'External links',
+        p: 'The site links to official sources (labour-law texts and similar) — we are not responsible for the privacy policies of those sites.',
+      },
+      {
+        h: 'Your rights',
+        p: 'If you emailed us and later want your message deleted, send your request to the same contact address and we will delete it.',
+      },
+      {
+        h: 'Updates to this policy',
+        p: 'We may update this page when our practices change; continued use of the site counts as acceptance of the current version.',
+      },
+    ],
+  },
+  terms: {
+    pageTitle: 'Terms of Use | Mustahaqqat',
+    pageDescription:
+      'Terms of use for Mustahaqqat: content is informational and estimated for awareness purposes, not legal or financial advice.',
+    heading: 'Terms of Use',
+    intro: 'By using Mustahaqqat you agree to these terms.',
+    updated: 'Last updated: 30 September 2026.',
+    sections: [
+      {
+        h: 'Nature of the content',
+        p: 'The site is an informational guide offering calculators and simplified guides about end-of-service benefits in the six Gulf states: Saudi Arabia, the UAE, Kuwait, Qatar, Bahrain, and Oman.',
+      },
+      {
+        h: 'Not professional advice',
+        p: 'Everything on the site — including calculator results — is general information for awareness purposes only, not legal, financial, or tax advice, and creates no professional relationship between you and us.',
+      },
+      {
+        h: 'Accuracy of information',
+        p: 'We make reasonable efforts to be accurate based on official labour-law texts, but laws change and practical application varies. Your actual entitlement depends on your contract and circumstances — always verify against the official text or consult a specialist.',
+      },
+      {
+        h: 'Acceptable use',
+        p: 'You may not abuse the site, attempt to harm it, or scrape it automatically in ways that degrade its performance or break the law.',
+      },
+      {
+        h: 'Intellectual property',
+        p: 'The site\u2019s content is original — you may share it and link to it with attribution, without claiming ownership or presenting it misleadingly.',
+      },
+      {
+        h: 'Limitation of liability',
+        p: 'You use the site at your own risk; we are not liable for any loss resulting from reliance on the content without independent verification.',
+      },
+      {
+        h: 'Changes to the terms',
+        p: 'We may amend these terms when needed; continued use of the site after any change means you accept the updated version.',
+      },
+    ],
+  },
+  disclaimerPage: {
+    pageTitle: 'Disclaimer | Mustahaqqat',
+    pageDescription:
+      'Mustahaqqat disclaimer: calculator results are estimates, not legal advice — always verify against official texts.',
+    heading: 'Disclaimer',
+    intro: 'Please read this notice before relying on any content on the site.',
+    updated: 'Last updated: 30 September 2026.',
+    sections: [
+      {
+        h: 'Estimated results',
+        p: 'All calculator results are estimates for awareness purposes only, based on our reading of statutory texts — the actual amount may differ depending on your employment contract, your employer\u2019s regulations, and your personal circumstances.',
+      },
+      {
+        h: 'Not legal advice',
+        p: 'No content on the site — calculators, guides, or answers — is legal advice, and none of it replaces consulting a licensed lawyer in your country.',
+      },
+      {
+        h: 'The lawyer contact form',
+        p: 'The form only composes an email on your device; submitting it creates no lawyer–client relationship between you and us or between you and any lawyer.',
+      },
+      {
+        h: 'The final reference',
+        p: 'In any dispute, the authoritative reference is the official text of your country\u2019s labour law and its competent judicial bodies.',
+      },
+      {
+        h: 'No guarantees',
+        p: 'We make reasonable efforts to keep the content accurate and the site available, but we do not guarantee it is error-free or uninterrupted.',
+      },
+    ],
   },
 };

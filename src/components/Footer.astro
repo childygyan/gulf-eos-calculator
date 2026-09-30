@@ -102,6 +102,33 @@ const year = new Date().getFullYear();
               {dict.footer.contactLink}
             </a>
           </li>
+          <li class="pt-3 text-xs font-bold uppercase tracking-wider text-gold-300">
+            {dict.footer.legalTitle}
+          </li>
+          <li>
+            <a
+              href={localizedPath('/privacy/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.privacyLink}
+            </a>
+          </li>
+          <li>
+            <a
+              href={localizedPath('/terms/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.termsLink}
+            </a>
+          </li>
+          <li>
+            <a
+              href={localizedPath('/disclaimer/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.disclaimerLink}
+            </a>
+          </li>
         </ul>
       </nav>
       <div>
