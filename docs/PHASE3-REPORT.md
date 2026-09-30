@@ -91,6 +91,9 @@ stay identical: `saudi-arabia`, `uae`, `kuwait`, `qatar`, `bahrain`, `oman`).
 ## Delivery
 
 - GitHub: pushed to `childygyan/gulf-eos-calculator` branch `main`;
-  remote head verified after push (see below).
+  commit `e79e3ae7b76453d3ca10babf58a0e90ecd95aecc`, remote head verified
+  via the API after push.
 - Drive: `gulf-eos-calculator-phase3-20260930.zip` in the project folder
   (excludes `node_modules/`, `dist/`, `.astro/`).
+  - File ID: `1MWQkpdclUIyeisj2jY_NkSMOhx3F6TSr`
+  - Link: https://drive.google.com/file/d/1MWQkpdclUIyeisj2jY_NkSMOhx3F6TSr/view?usp=drivesdk
