@@ -53,8 +53,8 @@
 
 ## Delivery
 - GitHub: `childygyan/gulf-eos-calculator`, branch `main`
-- Commit: _(SHA after push)_
-- Drive archive: _(file link after upload)_
+- Commit: `8f6913bc29d2e85790c0f0bf926c7de0d68e63ce` (verified: remote default branch `main`, head matches)
+- Drive archive: `gulf-eos-calculator-phase2-20260930.zip` (126K, 60 files) → https://drive.google.com/file/d/1nqC2WwxJsWIuJKfqCtwx8KKJb4LJ5krN/view?usp=drivesdk
 
 ## Open questions / follow-ups for Phase 3
 1. Oman split-date ambiguity (effective date vs contract-conclusion date) — modeled on effective-date; flag to Firoz's legal reviewers.
