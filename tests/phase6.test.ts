@@ -45,7 +45,10 @@ function allBuiltHtml(dir: string, acc: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
     if (statSync(full).isDirectory()) allBuiltHtml(full, acc);
-    else if (entry.endsWith('.html')) acc.push(full);
+    // 404.html is an error document, not a content page: it is intentionally
+    // absent from the sitemap and its hreflang alternates (/en/404) do not
+    // exist as files (Pages serves the single 404.html for every unknown path).
+    else if (entry.endsWith('.html') && entry !== '404.html') acc.push(full);
   }
   return acc;
 }

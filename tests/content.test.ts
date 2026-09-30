@@ -110,7 +110,10 @@ describe('internal links resolve', () => {
     for (const entry of readdirSync(dir)) {
       const full = join(dir, entry);
       if (statSync(full).isDirectory()) out.push(...allHtmlFiles(full));
-      else if (entry.endsWith('.html')) out.push(full);
+      // 404.html is an error document, not a content page: Pages serves it for
+      // every unknown path, so its hreflang alternates (e.g. /en/404) do not
+      // exist as files by design.
+      else if (entry.endsWith('.html') && entry !== '404.html') out.push(full);
     }
     return out;
   }

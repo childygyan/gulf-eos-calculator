@@ -14,6 +14,8 @@ export default defineConfig({
         defaultLocale: 'ar',
         locales: { ar: 'ar', en: 'en' },
       },
+      // The 404 page must never appear in the sitemap.
+      filter: (page) => !page.endsWith('/404') && !page.endsWith('/404/'),
     }),
   ],
 });
