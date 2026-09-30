@@ -1,0 +1,19 @@
+---
+/**
+ * components/AdSlot.astro — a clearly-marked AdSense slot placeholder.
+ *
+ * Renders NOTHING (empty string, zero height, no layout shift) until a real
+ * AdSense publisher ID is configured in src/config/site.ts
+ * (`SITE.adsenseClientId`). Positions: 'header' | 'in-article' | 'footer'.
+ */
+import { adSlotHtml, type AdPosition } from '../lib/ads.js';
+
+interface Props {
+  position: AdPosition;
+}
+
+const { position } = Astro.props;
+const html = adSlotHtml(position);
+---
+
+<Fragment set:html={html} />

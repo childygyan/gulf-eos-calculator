@@ -10,6 +10,7 @@ import { getDict } from '../i18n/dict.js';
 import { headTags } from '../lib/seo.js';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import AdSlot from '../components/AdSlot.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -42,9 +43,11 @@ const head = headTags({ locale, path, title, description });
       {locale === 'ar' ? 'تخطَّ إلى المحتوى' : 'Skip to content'}
     </a>
     <Header locale={locale} path={path} dict={dict} />
+    <AdSlot position="header" />
     <main id="main">
       <slot />
     </main>
+    <AdSlot position="footer" />
     <Footer locale={locale} dict={dict} />
   </body>
 </html>

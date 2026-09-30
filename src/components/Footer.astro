@@ -78,6 +78,30 @@ const year = new Date().getFullYear();
               {dict.nav.calculators}
             </a>
           </li>
+          <li>
+            <a
+              href={localizedPath('/lawyers/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.lawyersLink}
+            </a>
+          </li>
+          <li>
+            <a
+              href={localizedPath('/corrections/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.correctionsLink}
+            </a>
+          </li>
+          <li>
+            <a
+              href={localizedPath('/contact/', locale)}
+              class="transition hover:text-white"
+            >
+              {dict.footer.contactLink}
+            </a>
+          </li>
         </ul>
       </nav>
       <div>

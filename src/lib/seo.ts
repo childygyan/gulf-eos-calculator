@@ -5,9 +5,13 @@
  * `/en/`. `path` is always the UNPREFIXED path (e.g. `/` or `/about`).
  */
 import { DEFAULT_LOCALE, LOCALES, getLocale, type LocaleCode } from '../i18n/locales.js';
+import { SITE } from '../config/site.js';
 
-/** Placeholder until Firoz supplies the real production domain. */
-export const SITE_URL = 'https://gulf-eos.example.com';
+/**
+ * Placeholder until Firoz supplies the real production domain.
+ * Re-exported from the single config in src/config/site.ts (Phase 5).
+ */
+export const SITE_URL = SITE.siteUrl;
 
 export const SITE_NAME_AR = 'مستحقات';
 export const SITE_NAME_EN = 'Mustahaqqat';

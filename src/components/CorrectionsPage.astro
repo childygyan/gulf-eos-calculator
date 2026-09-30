@@ -1,0 +1,169 @@
+---
+/**
+ * components/CorrectionsPage.astro — correction / missing-rule form (Phase 5).
+ *
+ * Same honest pattern as the lawyer intake: client-side validation, then a
+ * pre-filled email (mailto to the placeholder inbox) plus a copyable
+ * summary. Copy is explicit that corrections are reviewed against official
+ * sources — no promise of an immediate fix.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from './AdSlot.astro';
+import { getDict, type Dict } from '../i18n/dict.js';
+import type { LocaleCode } from '../i18n/locales.js';
+import { localizedPath } from '../lib/seo.js';
+import { articleJsonLd } from '../lib/toolSeo.js';
+
+interface Props {
+  locale: LocaleCode;
+}
+
+const { locale } = Astro.props;
+const dict = getDict(locale);
+const s: Dict['corrections'] = dict.corrections;
+const path = '/corrections/';
+
+const inputCls =
+  'w-full rounded-xl border border-brand-200 bg-white px-4 py-2.5 text-brand-950 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-300';
+const labelCls = 'mb-1 block text-sm font-semibold text-brand-800';
+const errCls = 'mt-1 text-sm font-medium text-red-700';
+
+const config = { strings: s };
+
+const jsonLdExtra = articleJsonLd({
+  headline: s.heading,
+  description: s.pageDescription,
+  path,
+  locale,
+});
+---
+
+<BaseLayout
+  locale={locale}
+  path={path}
+  title={s.pageTitle}
+  description={s.pageDescription}
+  jsonLdExtra={jsonLdExtra}
+>
+  <script type="application/json" id="corrections-config" set:html={JSON.stringify(config)} />
+  <script>
+    import { initCorrectionsForm } from '../scripts/corrections-form.js';
+    initCorrectionsForm();
+  </script>
+
+  <article class="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+    <nav aria-label="breadcrumb" class="text-sm text-brand-500">
+      <a href={localizedPath('/', locale)} class="hover:text-brand-800">{dict.nav.home}</a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">{s.heading}</span>
+    </nav>
+
+    <h1 class="mt-4 text-3xl font-black text-brand-950 sm:text-4xl">{s.heading}</h1>
+    <p class="mt-4 text-lg leading-8 text-brand-700">{s.intro}</p>
+
+    <div class="mt-6 rounded-2xl border border-gold-300 bg-gold-50 p-5" role="note">
+      <p class="text-sm leading-7 text-brand-800">{s.honestNote}</p>
+    </div>
+
+    <AdSlot position="in-article" />
+
+    <form
+      id="corrections-form"
+      class="mt-8 rounded-2xl bg-white p-6 shadow-sm sm:p-8"
+      novalidate
+    >
+      <div class="grid gap-5">
+        <div>
+          <label for="corr-pageUrl" class={labelCls}>{s.pageUrlLabel}</label>
+          <input
+            id="corr-pageUrl"
+            type="text"
+            inputmode="url"
+            class={inputCls}
+            aria-describedby="corr-err-pageUrl"
+          />
+          <p class="mt-1 text-xs text-brand-500">{s.pageUrlHint}</p>
+          <p id="corr-err-pageUrl" class={`${errCls} hidden`} role="alert"></p>
+        </div>
+        <div>
+          <label for="corr-whatsWrong" class={labelCls}>{s.whatsWrongLabel}</label>
+          <textarea
+            id="corr-whatsWrong"
+            rows="3"
+            class={inputCls}
+            aria-describedby="corr-err-whatsWrong"
+          ></textarea>
+          <p class="mt-1 text-xs text-brand-500">{s.whatsWrongHint}</p>
+          <p id="corr-err-whatsWrong" class={`${errCls} hidden`} role="alert"></p>
+        </div>
+        <div>
+          <label for="corr-correctFigure" class={labelCls}>{s.correctFigureLabel}</label>
+          <textarea
+            id="corr-correctFigure"
+            rows="3"
+            class={inputCls}
+            aria-describedby="corr-err-correctFigure"
+          ></textarea>
+          <p id="corr-err-correctFigure" class={`${errCls} hidden`} role="alert"></p>
+        </div>
+        <div>
+          <label for="corr-sourceLink" class={labelCls}>{s.sourceLinkLabel}</label>
+          <input
+            id="corr-sourceLink"
+            type="url"
+            inputmode="url"
+            class={inputCls}
+            aria-describedby="corr-err-sourceLink"
+          />
+          <p class="mt-1 text-xs text-brand-500">{s.sourceLinkHint}</p>
+          <p id="corr-err-sourceLink" class={`${errCls} hidden`} role="alert"></p>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="mt-6 w-full rounded-xl bg-brand-900 px-6 py-3 font-bold text-white transition hover:bg-brand-800 sm:w-auto"
+      >
+        {s.submitLabel}
+      </button>
+    </form>
+
+    <section
+      id="corrections-confirm"
+      class="mt-8 hidden rounded-2xl bg-white p-6 shadow-sm sm:p-8"
+      aria-live="polite"
+    >
+      <h2 class="text-xl font-extrabold text-brand-950">{s.successTitle}</h2>
+      <p class="mt-2 leading-7 text-brand-700">{s.successIntro}</p>
+      <h3 class="mt-6 text-sm font-bold uppercase tracking-wider text-brand-500">
+        {s.summaryTitle}
+      </h3>
+      <pre
+        id="corrections-summary"
+        class="mt-2 whitespace-pre-wrap rounded-xl bg-brand-50 p-4 text-sm leading-7 text-brand-900"
+      ></pre>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          id="corrections-mailto"
+          href="#"
+          class="rounded-xl bg-gold-400 px-6 py-3 font-bold text-brand-950 transition hover:bg-gold-300"
+        >
+          {s.mailtoLabel}
+        </a>
+        <button
+          id="corrections-copy"
+          type="button"
+          class="rounded-xl border border-brand-300 px-6 py-3 font-bold text-brand-800 transition hover:bg-brand-50"
+        >
+          {s.copyLabel}
+        </button>
+        <button
+          id="corrections-back"
+          type="button"
+          class="rounded-xl px-6 py-3 font-semibold text-brand-600 underline hover:text-brand-900"
+        >
+          {s.backLabel}
+        </button>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
