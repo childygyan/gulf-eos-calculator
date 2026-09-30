@@ -607,7 +607,7 @@ export const en: Dict = {
   privacy: {
     pageTitle: 'Privacy Policy | Mustahaqqat',
     pageDescription:
-      'How Mustahaqqat handles your data: no accounts, no analytics tracking, and contact forms work through your own email app.',
+      'How Mustahaqqat handles your data: no accounts, contact forms work through your own email app, and we use Google Analytics to understand aggregate usage.',
     heading: 'Privacy Policy',
     intro:
       'This policy describes how Mustahaqqat handles information when you use the site.',
@@ -623,7 +623,7 @@ export const en: Dict = {
       },
       {
         h: 'Cookies and analytics',
-        p: 'We set no first-party cookies and currently use no analytics tools. The site\u2019s ad slots are empty until an ad account is activated; if ads are enabled in future (e.g. Google AdSense), the ad provider may use cookies to serve relevant ads.',
+        p: 'We use Google Analytics to understand how visitors use the site in aggregate — such as the most visited pages, traffic sources, and device types — and Google may use cookies for this purpose. We set no first-party cookies ourselves. The site\u2019s ad slots are empty until an ad account is activated; if ads are enabled in future (e.g. Google AdSense), the ad provider may use cookies to serve relevant ads.',
       },
       {
         h: 'Hosting and security',

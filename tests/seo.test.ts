@@ -18,6 +18,7 @@ import {
   hreflangLinks,
   localizedPath,
 } from '../src/lib/seo.js';
+import { SITE } from '../src/config/site.js';
 
 describe('seo helpers', () => {
   it('localizedPath prefixes only the non-default locale', () => {
@@ -60,6 +61,21 @@ describe('seo helpers', () => {
     const enHead = headTags({ locale: 'en', path: '/', title: 't', description: 'd' });
     expect(arHead).toContain('مستحقات');
     expect(enHead).toContain('Mustahaqqat');
+  });
+
+  it('headTags injects GA4 + search-console verification tags from site config', () => {
+    const head = headTags({ locale: 'ar', path: '/', title: 't', description: 'd' });
+    expect(SITE.ga4MeasurementId).not.toBe('');
+    expect(head).toContain(
+      `https://www.googletagmanager.com/gtag/js?id=${SITE.ga4MeasurementId}`,
+    );
+    expect(head).toContain(`gtag('config','${SITE.ga4MeasurementId}')`);
+    expect(head).toContain(
+      `<meta name="google-site-verification" content="${SITE.googleSiteVerification}" />`,
+    );
+    expect(head).toContain(
+      `<meta name="msvalidate.01" content="${SITE.bingSiteVerification}" />`,
+    );
   });
 });
 

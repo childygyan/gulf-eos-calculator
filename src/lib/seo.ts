@@ -63,6 +63,32 @@ export interface HeadInput {
 }
 
 /** Full `<head>` tag block: meta, OG/Twitter, canonical, hreflang, JSON-LD. */
+/** Search-console verification meta tags (only the configured ones). */
+function verificationTags(): string {
+  const tags: string[] = [];
+  if (SITE.googleSiteVerification) {
+    tags.push(
+      `<meta name="google-site-verification" content="${escapeAttr(SITE.googleSiteVerification)}" />`,
+    );
+  }
+  if (SITE.bingSiteVerification) {
+    tags.push(
+      `<meta name="msvalidate.01" content="${escapeAttr(SITE.bingSiteVerification)}" />`,
+    );
+  }
+  return tags.join('\n');
+}
+
+/** GA4 gtag.js snippet (only when a measurement ID is configured). */
+function analyticsTags(): string {
+  if (!SITE.ga4MeasurementId) return '';
+  const id = escapeAttr(SITE.ga4MeasurementId);
+  return [
+    `<script async src="https://www.googletagmanager.com/gtag/js?id=${id}"></script>`,
+    `<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');</script>`,
+  ].join('\n');
+}
+
 export function headTags(input: HeadInput): string {
   const { locale, path, title, description } = input;
   const canonical = canonicalUrl(path, locale);
@@ -74,6 +100,8 @@ export function headTags(input: HeadInput): string {
   return [
     `<meta charset="utf-8" />`,
     `<meta name="viewport" content="width=device-width, initial-scale=1" />`,
+    verificationTags(),
+    analyticsTags(),
     `<title>${t}</title>`,
     `<meta name="description" content="${d}" />`,
     `<link rel="icon" type="image/svg+xml" href="/favicon.svg" />`,

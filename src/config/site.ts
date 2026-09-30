@@ -26,10 +26,24 @@ export interface SiteConfig {
    * Firoz supplies a real publisher ID.
    */
   adsenseClientId: string;
+  /**
+   * GA4 measurement ID (e.g. `G-XXXXXXXXXX`). When set, the gtag.js
+   * snippet is injected into every page head via `headTags()`.
+   */
+  ga4MeasurementId: string;
+  /**
+   * Search-console verification tokens. When set, the corresponding
+   * `<meta>` tags are injected into every page head via `headTags()`.
+   */
+  googleSiteVerification: string;
+  bingSiteVerification: string;
 }
 
 export const SITE: SiteConfig = {
   siteUrl: 'https://endofservicegulf.org',
   contactEmail: 'intake@endofservicegulf.org',
   adsenseClientId: '',
+  ga4MeasurementId: 'G-GS7FF1XVSD',
+  googleSiteVerification: 'yrTNvTgdFCC2E8eKOWM3zgZRa34y5c3w4R_vLf3QNcA',
+  bingSiteVerification: '2A730A2FAF8DA672C0BDBCC548BEB4FA',
 };

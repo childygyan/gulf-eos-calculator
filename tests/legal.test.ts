@@ -102,4 +102,15 @@ describe('Legal pages in sitemap and footer', () => {
       }
     }
   });
+
+  it('privacy policy honestly discloses Google Analytics in both locales', () => {
+    // Guards the honesty rule: the site runs GA4, so the privacy page must
+    // say so — a stale "no analytics" claim would be false.
+    const arHtml = readBuiltPage('privacy/index.html');
+    const enHtml = readBuiltPage('en/privacy/index.html');
+    expect(arHtml).toContain('Google Analytics');
+    expect(enHtml).toContain('Google Analytics');
+    expect(arHtml).not.toContain('لا نستخدم أدوات تحليلية');
+    expect(enHtml).not.toContain('no analytics tracking');
+  });
 });
