@@ -3,8 +3,8 @@
 **Date:** 2026-09-30
 **Project:** Gulf EOS Calculator — مستحقات (Mustahaqqat)
 **Repo:** `childygyan/gulf-eos-calculator` · branch `main`
-**Commit SHA:** `PENDING_PUSH`
-**Drive archive:** `PENDING_UPLOAD` (folder 'Gulf EOS Calculator')
+**Commit SHA:** `69d79fac1aca3142b9732ae4c80110ada07fcbfb` (on `main`; seed commit `e964f7aa610ab03be5578d83272800056fa2582a` via Contents API)
+**Drive archive:** `gulf-eos-calculator-phase1-20260930.zip` — file id `1FYi3VxIaqSXOsYZXd3lNDr7JShcmB6_N` (folder 'Gulf EOS Calculator', folder id `1kZ51NAKI-l2QdSQ2jXXHrIEwWJU3JSMG`)
 
 ## What was built
 
@@ -47,13 +47,13 @@
 - Repo `childygyan/gulf-eos-calculator` (public), default branch `main` (verified via API).
 - First commit seeded via the Contents API (empty-repo 409 lesson), full Phase 1 tree
   pushed via `gh_datapush.py` as `Phase 1: foundation + i18n + SEO base`.
-- Commit SHA: `PENDING_PUSH`
+- Commit SHA: `69d79fac1aca3142b9732ae4c80110ada07fcbfb`
 
 ## Google Drive
 
 - Folder 'Gulf EOS Calculator' (created), archive
   `gulf-eos-calculator-phase1-20260930.zip` (excludes node_modules/, dist/, .astro/).
-- Drive file id: `PENDING_UPLOAD`
+- Drive file id: `1FYi3VxIaqSXOsYZXd3lNDr7JShcmB6_N`
 
 ## Open gaps / next phases
 
