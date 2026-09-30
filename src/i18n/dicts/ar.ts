@@ -98,6 +98,8 @@ export const ar = {
     backToCalculators: 'عودة إلى الحاسبات',
     estimateBadge: 'نتيجة تقديرية',
     countryLabel: 'الدولة',
+    jsRequired: 'هذه الحاسبة تفاعلية وتحتاج إلى تفعيل JavaScript في متصفحك لتعمل.',
+    noJsMailtoLead: 'متصفحك يعطّل JavaScript — يمكنك مراسلتنا مباشرة على:',
   },
   calculators: {
     pageTitle: 'الحاسبات | مستحقات',
@@ -533,6 +535,7 @@ export const ar = {
     mailtoLabel: 'فتح البريد الإلكتروني للإرسال',
     copyLabel: 'نسخ الملخص',
     copiedLabel: 'تم النسخ ✓',
+    manualCopyHint: 'تعذّر النسخ التلقائي — حدّد الملخص أعلاه وانسخه يدويًا.',
     backLabel: 'تعديل الطلب',
     emailSubject: 'استفسار قانوني: {country} — {caseType}',
     summaryLabels: {
@@ -574,6 +577,7 @@ export const ar = {
     mailtoLabel: 'فتح البريد الإلكتروني للإرسال',
     copyLabel: 'نسخ الملخص',
     copiedLabel: 'تم النسخ ✓',
+    manualCopyHint: 'تعذّر النسخ التلقائي — حدّد الملخص أعلاه وانسخه يدويًا.',
     backLabel: 'تعديل التصحيح',
     emailSubject: 'تصحيح مقترح: {page}',
     summaryLabels: {

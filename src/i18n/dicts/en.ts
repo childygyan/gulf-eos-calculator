@@ -95,6 +95,8 @@ export const en: Dict = {
     backToCalculators: 'Back to calculators',
     estimateBadge: 'Estimated result',
     countryLabel: 'Country',
+    jsRequired: 'This calculator is interactive and needs JavaScript enabled in your browser to work.',
+    noJsMailtoLead: 'JavaScript is disabled in your browser — you can email us directly at:',
   },
   calculators: {
     pageTitle: 'Calculators | Mustahaqqat',
@@ -530,6 +532,7 @@ export const en: Dict = {
     mailtoLabel: 'Open email to send',
     copyLabel: 'Copy summary',
     copiedLabel: 'Copied ✓',
+    manualCopyHint: 'Automatic copy failed — please select the summary above and copy it manually.',
     backLabel: 'Edit request',
     emailSubject: 'Legal inquiry: {country} — {caseType}',
     summaryLabels: {
@@ -572,6 +575,7 @@ export const en: Dict = {
     mailtoLabel: 'Open email to send',
     copyLabel: 'Copy summary',
     copiedLabel: 'Copied ✓',
+    manualCopyHint: 'Automatic copy failed — please select the summary above and copy it manually.',
     backLabel: 'Edit correction',
     emailSubject: 'Suggested correction: {page}',
     summaryLabels: {

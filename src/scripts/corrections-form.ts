@@ -14,6 +14,7 @@ import {
   type CorrectionInput,
 } from '../lib/forms.js';
 import { fill, type Dict } from '../i18n/dict.js';
+import { copyText, selectForManualCopy } from './clipboard.js';
 
 interface CorrectionsConfig {
   strings: Dict['corrections'];
@@ -92,24 +93,23 @@ export function initCorrectionsForm(): void {
 
   document.getElementById('corrections-copy')?.addEventListener('click', async (e) => {
     const btn = e.currentTarget as HTMLButtonElement;
-    const text = document.getElementById('corrections-summary')?.textContent ?? '';
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-    }
+    const summaryEl = document.getElementById('corrections-summary');
+    const text = summaryEl?.textContent ?? '';
+    const ok = await copyText(text);
     const original = btn.textContent;
-    btn.textContent = s.copiedLabel;
+    if (ok) {
+      btn.textContent = s.copiedLabel;
+    } else {
+      // Honest fallback: never claim the copy worked. Select the summary so
+      // the user can copy it manually, and say so on the button.
+      selectForManualCopy(summaryEl);
+      btn.textContent = s.manualCopyHint;
+    }
     btn.disabled = true;
     setTimeout(() => {
       btn.textContent = original;
       btn.disabled = false;
-    }, 2000);
+    }, 4000);
   });
 
   document.getElementById('corrections-back')?.addEventListener('click', () => {

@@ -36,7 +36,8 @@ export interface EosInput {
   serviceMonths: number;
   /** ISO employment start date (YYYY-MM-DD). Needed for OM/BH regime splits. */
   startDate?: string;
-  /** ISO end-of-service date. Defaults to today (UTC). */
+  /** ISO end-of-service date. Validated (must not precede startDate); service
+   *  length still comes from the explicit years/months inputs. */
   endDate?: string;
 }
 
@@ -99,17 +100,12 @@ function parseISODate(iso: string): number {
   const t = Date.parse(`${iso}T00:00:00Z`);
   return t;
 }
-
 /** Fractional years between two ISO dates (UTC, 365.25-day year). */
 export function yearsBetweenISO(fromISO: string, toISO: string): number {
   const from = parseISODate(fromISO);
   const to = parseISODate(toISO);
   if (!Number.isFinite(from) || !Number.isFinite(to) || to < from) return NaN;
   return (to - from) / 86_400_000 / 365.25;
-}
-
-function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
 }
 
 /** Walk the tier bands, recording how much service each band consumed. */
@@ -219,7 +215,9 @@ export function calculateEos(input: EosInput): EosResult {
     };
   }
 
-  const endDate = input.endDate ?? todayISO();
+  // endDate is accepted and validated (must not precede startDate) but does
+  // not change the award: service length comes from the explicit
+  // years/months inputs; dates only drive the OM/BH regime attribution above.
 
   // --- Oman regime split (effective-date reading; see docs/SOURCES.md) ---
   if (code === 'OM' && input.startDate) {

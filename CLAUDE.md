@@ -28,6 +28,19 @@
   `src/config/site.ts` (`siteUrl`, `contactEmail`, `adsenseClientId` — all placeholders
   Firoz must fill); footer links to the 3 new pages. Tests 118/118. See
   `docs/PHASE5-REPORT.md`.
+- **Phase 6** (2026-09-30): hardening — removed dead `endDate`/`todayISO` in
+  `src/engine/eos.ts` (endDate stays validated: start ≤ end); replaced the
+  deprecated `document.execCommand('copy')` fallback with a shared
+  `src/scripts/clipboard.ts` (Clipboard API only + honest manual-copy hint,
+  `lawyers`/`corrections.manualCopyHint` dict keys); `<noscript>` fallbacks
+  on all 24 interactive pages (calculators: `common.jsRequired` notice;
+  lawyers/corrections: visible mailto fallback via `common.noJsMailtoLead` +
+  SITE.contactEmail); explicit ids on the VAT mode radios; 37 new tests in
+  `tests/phase6.test.ts` (dict parity for all Phase 4/5 sections both ways,
+  sitemap↔dist bidirectional, unique titles/descriptions, canonical==
+  hreflang self-ref, a11y invariants, no-JS, placeholder discipline,
+  perf budget). All 155/155 green; typecheck 0/0/0; build clean (48 pages).
+  See `docs/PHASE6-REPORT.md`.
 
 ## Deploy notes (for later phases)
 

@@ -13,6 +13,7 @@ import { getDict, type Dict } from '../i18n/dict.js';
 import type { LocaleCode } from '../i18n/locales.js';
 import { localizedPath } from '../lib/seo.js';
 import { articleJsonLd } from '../lib/toolSeo.js';
+import { SITE } from '../config/site.js';
 
 interface Props {
   locale: LocaleCode;
@@ -126,6 +127,18 @@ const jsonLdExtra = articleJsonLd({
         {s.submitLabel}
       </button>
     </form>
+
+    <noscript>
+      <p class="mt-8 rounded-xl border border-gold-300 bg-gold-50 p-4 text-sm leading-7 text-brand-800">
+        {dict.common.noJsMailtoLead}{' '}
+        <a
+          href={`mailto:${SITE.contactEmail}`}
+          class="font-bold text-brand-900 underline decoration-gold-400 decoration-2 underline-offset-4"
+        >
+          {SITE.contactEmail}
+        </a>
+      </p>
+    </noscript>
 
     <section
       id="corrections-confirm"
