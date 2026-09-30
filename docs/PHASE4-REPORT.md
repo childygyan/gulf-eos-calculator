@@ -76,12 +76,12 @@ exposes the numeric model for the drift test.
 ## Delivery
 
 - GitHub: pushed to `childygyan/gulf-eos-calculator` branch `main`;
-  implementation commit `PHASE4_SHA` (verified: remote default branch
-  `main`, head matches after push).
-- Drive: `gulf-eos-calculator-phase4-20260930.zip` in the project folder
-  (excludes `node_modules/`, `dist/`, `.astro/`).
-  - File ID: `PHASE4_DRIVE_ID`
-  - Link: `PHASE4_DRIVE_LINK`
+  implementation commit `4744f85b7dfcff09089c4ed24c1669e43e533756`
+  (verified: remote default branch `main`, head matches after push).
+- Drive: `gulf-eos-calculator-phase4-20260930.zip` (210K, 123 files) in the
+  project folder (excludes `node_modules/`, `dist/`, `.astro/`, `.git/`).
+  - File ID: `15xYajqh6ndHiIT2xXmHZXvSvEW6rGNre`
+  - Link: https://drive.google.com/file/d/15xYajqh6ndHiIT2xXmHZXvSvEW6rGNre/view?usp=drivesdk
 
 ## Open notes for later phases
 
