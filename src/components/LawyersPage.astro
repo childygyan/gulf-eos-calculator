@@ -136,6 +136,19 @@ const jsonLdExtra = articleJsonLd({
         <p class="mt-1 text-xs text-brand-500">{s.descriptionHint}</p>
         <p id="lawyer-err-description" class={`${errCls} hidden`} role="alert"></p>
       </div>
+      <div class="mt-5 flex items-start gap-3 rounded-xl border border-brand-200 bg-brand-50/60 p-4">
+        <input
+          id="lawyer-consent"
+          type="checkbox"
+          class="mt-1 h-5 w-5 shrink-0 rounded border-brand-300 accent-brand-900"
+        />
+        <div>
+          <label for="lawyer-consent" class="block text-sm font-semibold leading-6 text-brand-800">
+            {s.consentLabel}
+          </label>
+          <p class="mt-1 text-xs leading-5 text-brand-500">{s.consentHint}</p>
+        </div>
+      </div>
       <button
         type="submit"
         class="mt-6 w-full rounded-xl bg-brand-900 px-6 py-3 font-bold text-white transition hover:bg-brand-800 sm:w-auto"

@@ -338,6 +338,18 @@ describe('Phase 5 page inventory', () => {
     expect(enHtml).toContain('id="lawyers-form"');
   });
 
+  it('lawyers form has an opt-in partner-sharing consent checkbox (both locales)', () => {
+    // GDPR-style explicit consent: sharing with a partner lawyer must never
+    // be implied — the checkbox is unchecked by default and optional.
+    for (const page of ['lawyers/index.html', 'en/lawyers/index.html']) {
+      const html = readBuiltPage(page);
+      expect(html, page).toContain('id="lawyer-consent"');
+      expect(html, page).toContain('type="checkbox"');
+      // Unchecked by default — not pre-ticked.
+      expect(html, page).not.toContain('id="lawyer-consent" checked');
+    }
+  });
+
   it('corrections page embeds the correction form and config JSON', () => {
     const arHtml = readBuiltPage('corrections/index.html');
     expect(arHtml).toContain('id="corrections-form"');

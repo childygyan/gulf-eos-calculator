@@ -514,6 +514,10 @@ export const en: Dict = {
     descriptionHint: 'A sentence or two is enough: what happened, when, and what you are claiming.',
     selectPlaceholder: 'Select…',
     submitLabel: 'Review request',
+    consentLabel:
+      'I agree that my inquiry may be shared with a partner lawyer if the partner program launches',
+    consentHint:
+      'Optional. Without this tick, your inquiry goes only to our inbox and is never shared with any lawyer.',
     caseTypes: {
       resignation: 'Resignation dispute',
       termination: 'Termination / EOS underpayment',
@@ -547,7 +551,10 @@ export const en: Dict = {
       contact: 'Contact',
       description: 'Case description',
       route: 'Routing',
+      consent: 'Partner sharing consent',
     },
+    consentGiven: 'Yes — inquiry may be shared with a partner lawyer',
+    consentNotGiven: 'No — do not share',
   },
   corrections: {
     pageTitle: 'Report a correction | Mustahaqqat',
@@ -611,7 +618,7 @@ export const en: Dict = {
     heading: 'Privacy Policy',
     intro:
       'This policy describes how Mustahaqqat handles information when you use the site.',
-    updated: 'Last updated: 30 September 2026.',
+    updated: 'Last updated: 15 October 2026.',
     sections: [
       {
         h: 'A static site with no accounts',
@@ -631,7 +638,7 @@ export const en: Dict = {
       },
       {
         h: 'Data sharing',
-        p: 'We do not sell your data or share it with third parties for marketing purposes.',
+        p: 'We do not sell your data. If we set up a lawyer partner program in the future, the details of a case inquiry you send us may be shared with one partner lawyer — but only if you explicitly opt in with the consent checkbox on the inquiry form. Without your consent, your inquiry is never shared with anyone.',
       },
       {
         h: 'External links',

@@ -88,6 +88,9 @@ export function initLawyersForm(): void {
     const caseLabel = cfg.caseTypes.find((c) => c.id === caseType)?.label ?? caseType;
     const routeText = fill(s.routeLine, { country: countryName, caseType: caseLabel });
 
+    const consent =
+      (document.getElementById('lawyer-consent') as HTMLInputElement | null)
+        ?.checked ?? false;
     const lines = [
       `${s.summaryLabels.country}: ${countryName}`,
       `${s.summaryLabels.caseType}: ${caseLabel}`,
@@ -95,6 +98,7 @@ export function initLawyersForm(): void {
       `${s.summaryLabels.contact}: ${input.contact}`,
       `${s.summaryLabels.description}: ${input.description}`,
       `${s.summaryLabels.route}: ${route.routeCode}`,
+      `${s.summaryLabels.consent}: ${consent ? s.consentGiven : s.consentNotGiven}`,
     ];
     const summary = lines.join('\n');
 
