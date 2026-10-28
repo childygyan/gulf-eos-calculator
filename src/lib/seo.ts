@@ -100,6 +100,7 @@ export function headTags(input: HeadInput): string {
   return [
     `<meta charset="utf-8" />`,
     `<meta name="viewport" content="width=device-width, initial-scale=1" />`,
+    `<meta name="revisit-after" content="7 days" />`,
     verificationTags(),
     analyticsTags(),
     `<title>${t}</title>`,
